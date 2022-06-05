@@ -48,10 +48,12 @@ await new Command()
   .arguments("<value:string>")
   .action(async (_options, value) => {
     await getDefaultAocd().setSessionCookie(value);
+    console.log("The session cookie was set and is now usable by aocd.");
   })
   .command("clear-data", "Forget the session cookie and cached inputs")
   .action(async () => {
     await getDefaultAocd().clearData();
+    console.log("Session cookie and cached data has been cleared.");
   })
   .command("get-input", "View the input for a specific day's challenge")
   .arguments("<year:number> <day:number>")

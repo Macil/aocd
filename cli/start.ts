@@ -45,7 +45,8 @@ Deno.test("part2", () => {
   assertEquals(part2(TEST_INPUT), 12);
 });
 `;
-  const newFile = await Deno.open(`day_${day}.ts`, {
+  const newFileName = `day_${day}.ts`;
+  const newFile = await Deno.open(newFileName, {
     write: true,
     createNew: true,
   });
@@ -54,4 +55,5 @@ Deno.test("part2", () => {
   } finally {
     newFile.close();
   }
+  console.log(`Created ${newFileName}`);
 }
