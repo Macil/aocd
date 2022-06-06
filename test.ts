@@ -9,6 +9,17 @@ class TestAocd extends Aocd {
   getInput = sinon.spy((year: number, day: number) =>
     Promise.resolve(JSON.stringify({ year, day }))
   );
+
+  submit = sinon.spy(
+    (
+      _year: number,
+      _day: number,
+      _part: number,
+      _solution: number,
+    ): Promise<boolean> => {
+      throw new Error("Method not implemented.");
+    },
+  );
 }
 
 Deno.test("Aocd.runPart", async () => {

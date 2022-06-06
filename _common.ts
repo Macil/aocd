@@ -16,6 +16,7 @@ export const defaultConfig: Config = {
 
 export interface PartResult {
   answer: number;
+  correct?: boolean;
 }
 
 export abstract class Aocd {
@@ -32,20 +33,28 @@ export abstract class Aocd {
     part: number,
     solver: Solver,
   ): Promise<PartResult> {
-    if (this.config.submit) {
-      // TODO
-      console.warn("Answer submitting is not implemented yet");
-    }
     const inputPromise = this.getInput(year, day);
     let runAndGetResultShower = async (): Promise<() => PartResult> => {
       const input = await inputPromise;
       const answer = await solver(input);
 
+      let correct: boolean | undefined;
+      if (this.config.submit) {
+        correct = await this.submit(year, day, part, answer);
+      }
+
       return () => {
         if (this.config.printResults) {
           console.log(`${year} Day ${day} Part ${part}: ${answer}`);
+          if (correct != undefined) {
+            console.log(
+              `The answer has been submitted and it is ${
+                correct ? "correct!" : "wrong."
+              }`,
+            );
+          }
         }
-        return { answer };
+        return { answer, correct };
       };
     };
 
@@ -69,4 +78,11 @@ export abstract class Aocd {
   }
 
   abstract getInput(year: number, day: number): Promise<string>;
+
+  abstract submit(
+    year: number,
+    day: number,
+    part: number,
+    solution: number,
+  ): Promise<boolean>;
 }

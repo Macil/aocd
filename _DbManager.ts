@@ -15,7 +15,7 @@ export class DbManager {
     const dbPath = this.getMainDbPath();
     await Deno.mkdir(dirname(dbPath), { recursive: true });
     const db = new DB(dbPath);
-    db.query(`
+    db.query(`\
       CREATE TABLE IF NOT EXISTS sessions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -35,12 +35,23 @@ export class DbManager {
     const dbPath = this.getCacheDbPath();
     await Deno.mkdir(dirname(dbPath), { recursive: true });
     const db = new DB(dbPath);
-    db.query(`
+    db.query(`\
       CREATE TABLE IF NOT EXISTS inputs (
         year INTEGER NOT NULL,
         day INTEGER NOT NULL,
         input TEXT,
         PRIMARY KEY (year, day)
+      )
+    `);
+    db.query(`\
+      CREATE TABLE IF NOT EXISTS sent_solutions (
+        year INTEGER NOT NULL,
+        day INTEGER NOT NULL,
+        part INTEGER NOT NULL,
+        solution INTEGER NOT NULL,
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        correct INTEGER NOT NULL,
+        PRIMARY KEY (year, day, part, solution)
       )
     `);
     return db;

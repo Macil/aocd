@@ -118,6 +118,13 @@ You can run one day's tests with `deno test day_1.ts` or by clicking the play
 button next to it inside of Visual Studio Code. You can run all days' tests with
 `deno task test`.
 
+When you're confident about a solution, you can add the `--submit` (or `-s`)
+flag to submit the solution and see if it was correct:
+
+```
+deno run -A day_1.ts --submit
+```
+
 When you're ready to start a new solution script for another day's challenge,
 run:
 
@@ -138,8 +145,9 @@ the `-h` flag to the subcommand, like `aocd init -h`.
 ### Session and Cache Info
 
 Aocd caches inputs so that they do not have to be refetched from the Advent of
-Code website every time a solution script is executed. This cache and the
-session cookie can be erased by running `aocd clear-data`.
+Code website every time a solution script is executed. Submitted answers are
+cached similarly. This cache and the session cookie can be erased by running
+`aocd clear-data`.
 
 Aocd stores data inside
 [cacheDir](https://github.com/justjavac/deno_dirs/tree/main/cache_dir) `/aocd`

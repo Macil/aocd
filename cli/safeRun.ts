@@ -45,8 +45,22 @@ export async function safeRun(
             if (!options.submit) {
               return new Response("Forbidden", { status: 403 });
             }
-            // TODO
-            return new Response("Not found", { status: 404 });
+            const body = await request.json();
+            const { year, day, part, solution } = body;
+            if (
+              typeof year !== "number" || typeof day !== "number" ||
+              typeof part !== "number" || typeof solution !== "number"
+            ) {
+              return new Response("Invalid body", { status: 400 });
+            }
+            const correct = await getAocd().submit(year, day, part, solution);
+            const responseBody = { correct };
+            return new Response(JSON.stringify(responseBody), {
+              headers: {
+                "Content-Type": "application/json",
+              },
+              status: 200,
+            });
           } else {
             return new Response("Not found", { status: 404 });
           }
