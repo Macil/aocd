@@ -13,15 +13,12 @@ fetching the problem input and running your solutions with the input. This
 allows you to avoid needing to manually download problem inputs and lets you
 avoid committing them into your repo.
 
-**This project is incomplete: The `aocd init` command and the solution
-submitting functionality are not implemented yet.**
-
 ## Install
 
 The `aocd` CLI tool can be installed with this command:
 
 ```
-deno install -A --no-check -r -f https://deno.land/x/aocd/cli.ts
+deno install -A -r -f https://deno.land/x/aocd/cli.ts
 ```
 
 ## Usage
@@ -70,7 +67,7 @@ function part2(input: string): number {
 
 if (import.meta.main) {
   runPart(2021, 1, 1, part1);
-  runPart(2021, 1, 2, part2);
+  // runPart(2021, 1, 2, part2);
 }
 
 const TEST_INPUT = `\
@@ -104,7 +101,8 @@ test inputs and tests if the problem description gives multiple examples.
 
 The `if (import.meta.main) {` check around the `runPart()` calls is so that the
 solutions are not run when tests are run. You are not expected to modify that
-if-block or its contents.
+if-block or its contents except to uncomment the part 2 `runPart()` call once
+you're ready to work on part 2's solution.
 
 An example of complete solution based on this template using this library can be
 seen at
@@ -141,6 +139,12 @@ aocd start 2
 This will create a `day_2.ts` file in the directory.
 
 ## Advanced
+
+### Help Info
+
+You can run `aocd -h` to see a listing of all subcommands and options it
+supports. Some subcommands have their own options which can be viewed by passing
+the `-h` flag to the subcommand, like `aocd init -h`.
 
 ### Session and Cache Info
 
