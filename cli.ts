@@ -14,7 +14,7 @@ await new Command()
   .description(
     "Helper tool for solving Advent of Code with Deno.\nFull instructions are available at <https://github.com/Macil/aocd/blob/main/README.md>.",
   )
-  .version("0.1.1")
+  .version("1.0.0")
   .action(() => {
     throw new ValidationError("A command is required");
   })
