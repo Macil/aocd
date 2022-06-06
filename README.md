@@ -186,7 +186,7 @@ If you must pass in extra flags to the Deno process started by safe-run, you can
 do that with the `--deno-flags` parameter:
 
 ```
-aocd safe-run --deno-flags="--allow-net --allow-env" https://raw.githubusercontent.com/Macil/deno-advent2021/main/day_1.ts
+aocd safe-run --deno-flags="--allow-net --allow-env --reload" https://raw.githubusercontent.com/Macil/deno-advent2021/main/day_1.ts
 ```
 
 ## Related Projects
