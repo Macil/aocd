@@ -114,20 +114,9 @@ You can run a solution script like this:
 deno run -A day_1.ts
 ```
 
-You can run a solution script's tests like this:
-
-```
-deno test day_1.ts
-```
-
-Or you can run tests inside of Visual Studio Code by clicking the play button
-next to a Deno.test call inside of a script.
-
-You can run all solution scripts' tests like this:
-
-```
-deno test day_*.ts
-```
+You can run one day's tests with `deno test day_1.ts` or by clicking the play
+button next to it inside of Visual Studio Code. You can run all days' tests with
+`deno task test`.
 
 When you're ready to start a new solution script for another day's challenge,
 run:

@@ -111,9 +111,9 @@ You can start a new day's challenge with this command:
 aocd start 2
 \`\`\`
 
-You can run all tests with \`deno task test\`, or you can run an individual test
-with \`deno test day_1.ts\` or by clicking the play button next to it inside of
-Visual Studio Code.
+You can run one day's tests with \`deno test day_1.ts\` or by clicking the play
+button next to it inside of Visual Studio Code. You can run all days' tests with
+\`deno task test\`.
 `;
 }
 
