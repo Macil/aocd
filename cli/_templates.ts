@@ -1,3 +1,5 @@
+import { version } from "../version.ts";
+
 export const initTemplates: { [path: string]: string } = {
   ".editorconfig": `\
 root = true
@@ -127,7 +129,7 @@ aocd start 2
 export function dayScript(year: number, day: number) {
   return `\
 import { assertEquals } from "https://deno.land/std@0.142.0/testing/asserts.ts";
-import { runPart } from "https://deno.land/x/aocd@v1.0.0/mod.ts";
+import { runPart } from "https://deno.land/x/aocd@v${version}/mod.ts";
 
 function parse(input: string) {
   return input.trimEnd().split("\\n").map(Number);

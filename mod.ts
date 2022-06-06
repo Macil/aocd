@@ -5,6 +5,7 @@ export { DefaultAocd } from "./DefaultAocd.ts";
 import { Aocd, Solver } from "./_common.ts";
 import { SafeRunAocd } from "./SafeRunAocd.ts";
 export * from "./_common.ts";
+export { version } from "./version.ts";
 
 let singleton: Aocd | undefined;
 

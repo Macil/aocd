@@ -5,6 +5,7 @@ import {
 } from "https://deno.land/x/cliffy@v0.24.2/command/mod.ts";
 import { writeAll } from "https://deno.land/std@0.142.0/streams/conversion.ts";
 import { getDefaultAocd } from "./mod.ts";
+import { version } from "./version.ts";
 import { init } from "./cli/init.ts";
 import { start } from "./cli/start.ts";
 import { safeRun } from "./cli/safeRun.ts";
@@ -14,7 +15,7 @@ await new Command()
   .description(
     "Helper tool for solving Advent of Code with Deno.\nFull instructions are available at <https://github.com/Macil/aocd/blob/main/README.md>.",
   )
-  .version("1.0.0")
+  .version(version)
   .action(() => {
     throw new ValidationError("A command is required");
   })
