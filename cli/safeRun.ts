@@ -20,31 +20,36 @@ export async function safeRun(
 
   async function runServer() {
     async function respond(request: Request): Promise<Response> {
-      const errResponse = basicAuth(request, "sandbox", {
-        sandbox: password,
-      });
-      if (errResponse) {
-        return errResponse;
-      }
-      const url = new URL(request.url);
-      if (url.pathname === "/getInput") {
-        const year = Number(url.searchParams.get("year"));
-        const day = Number(url.searchParams.get("day"));
-        const input = await getAocd().getInput(year, day);
-        return new Response(input, {
-          headers: {
-            "Content-Type": "text/plain",
-          },
-          status: 200,
+      try {
+        const errResponse = basicAuth(request, "sandbox", {
+          sandbox: password,
         });
-      } else if (url.pathname === "/submit") {
-        if (!options.submit) {
-          return new Response("Forbidden", { status: 403 });
+        if (errResponse) {
+          return errResponse;
         }
-        // TODO
-        return new Response("Not found", { status: 404 });
-      } else {
-        return new Response("Not found", { status: 404 });
+        const url = new URL(request.url);
+        if (url.pathname === "/getInput") {
+          const year = Number(url.searchParams.get("year"));
+          const day = Number(url.searchParams.get("day"));
+          const input = await getAocd().getInput(year, day);
+          return new Response(input, {
+            headers: {
+              "Content-Type": "text/plain",
+            },
+            status: 200,
+          });
+        } else if (url.pathname === "/submit") {
+          if (!options.submit) {
+            return new Response("Forbidden", { status: 403 });
+          }
+          // TODO
+          return new Response("Not found", { status: 404 });
+        } else {
+          return new Response("Not found", { status: 404 });
+        }
+      } catch (err) {
+        console.error("Error while serving request", err);
+        return new Response("Internal Server Error", { status: 500 });
       }
     }
 
