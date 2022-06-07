@@ -1,20 +1,26 @@
 import { DB } from "https://deno.land/x/sqlite@v3.4.0/mod.ts";
 import cacheDir from "https://deno.land/x/dir@1.4.0/cache_dir/mod.ts";
 import dataDir from "https://deno.land/x/dir@1.4.0/data_dir/mod.ts";
-import { memoizy } from "https://deno.land/x/memoizy@1.0.0/mod.ts";
-import { dirname } from "https://deno.land/std@0.142.0/path/mod.ts";
+import once from "https://deno.land/x/once@0.3.0/index.ts";
 
 export class DbManager {
-  private getMainDbPath() {
+  private getDataDir = once(() => {
     const dataDir_ = dataDir();
     if (!dataDir_) throw new Error("Could not find data directory");
-    return dataDir_ + "/aocd/main.db";
+    return dataDir_ + "/aocd";
+  });
+
+  private getMainDbPath() {
+    return this.getDataDir() + "/main.db";
   }
 
-  readonly getMainDb = memoizy(async () => {
-    const dbPath = this.getMainDbPath();
-    await Deno.mkdir(dirname(dbPath), { recursive: true });
-    const db = new DB(dbPath);
+  readonly getMainDb = once(async () => {
+    await Deno.permissions.request({
+      name: "read",
+      path: this.getDataDir(),
+    });
+    await Deno.mkdir(this.getDataDir(), { recursive: true });
+    const db = new DB(this.getMainDbPath());
     db.query(`\
       CREATE TABLE IF NOT EXISTS sessions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -25,16 +31,23 @@ export class DbManager {
     return db;
   });
 
-  private getCacheDbPath() {
+  private getCacheDir = once(() => {
     const cacheDir_ = cacheDir();
     if (!cacheDir_) throw new Error("Could not find cache directory");
-    return cacheDir_ + "/aocd/cache.db";
+    return cacheDir_ + "/aocd";
+  });
+
+  private getCacheDbPath() {
+    return this.getCacheDir() + "/cache.db";
   }
 
-  readonly getCacheDb = memoizy(async () => {
-    const dbPath = this.getCacheDbPath();
-    await Deno.mkdir(dirname(dbPath), { recursive: true });
-    const db = new DB(dbPath);
+  readonly getCacheDb = once(async () => {
+    await Deno.permissions.request({
+      name: "read",
+      path: this.getCacheDir(),
+    });
+    await Deno.mkdir(this.getCacheDir(), { recursive: true });
+    const db = new DB(this.getCacheDbPath());
     db.query(`\
       CREATE TABLE IF NOT EXISTS inputs (
         year INTEGER NOT NULL,
