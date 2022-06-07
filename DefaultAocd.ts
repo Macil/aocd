@@ -6,10 +6,18 @@ export class DefaultAocd extends Aocd {
   private dbManager = new DbManager();
 
   private readonly getSessionCookie = memoizy(async (): Promise<string> => {
-    const AOC_SESSION = Deno.env.get("AOC_SESSION");
-    if (AOC_SESSION) {
-      return AOC_SESSION;
+    // Don't try to use the AOC_SESSION env variable unless the user has given access to it.
+    const hasAocSessionEnvPerm = await Deno.permissions.query({
+      name: "env",
+      variable: "AOC_SESSION",
+    });
+    if (hasAocSessionEnvPerm.state === "granted") {
+      const AOC_SESSION = Deno.env.get("AOC_SESSION");
+      if (AOC_SESSION) {
+        return AOC_SESSION;
+      }
     }
+
     const db = await this.dbManager.getMainDb();
     const results = db.query<[string]>("SELECT session FROM sessions LIMIT 1");
     if (results[0]) {
