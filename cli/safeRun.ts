@@ -1,6 +1,5 @@
 import { getAocd } from "../mod.ts";
 import { basicAuth } from "https://deno.land/x/basic_auth@v1.0.2/mod.ts";
-import once from "https://deno.land/x/once@0.3.0/index.ts";
 
 export interface SafeRunOptions {
   scriptArg: string;
@@ -15,7 +14,10 @@ export async function safeRun(
   if (apiServer.addr.transport !== "tcp") {
     throw new Error("Should not happen: wrong transport mode");
   }
-  const apiServerClose = once(() => apiServer.close());
+  const abortController = new AbortController();
+  abortController.signal.addEventListener("abort", () => {
+    apiServer.close();
+  });
   try {
     const { addr } = apiServer;
 
@@ -120,13 +122,13 @@ export async function safeRun(
         ],
       });
       const status = await p.status();
-      apiServerClose();
+      abortController.abort();
       return status;
     };
 
     const [, status] = await Promise.all([runServer(), runScript()]);
     return status;
   } finally {
-    apiServerClose();
+    abortController.abort();
   }
 }
