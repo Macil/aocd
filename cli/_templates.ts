@@ -55,6 +55,16 @@ jobs:
       "runtimeExecutable": "deno",
       "runtimeArgs": ["run", "--inspect-brk", "--allow-all"],
       "attachSimplePort": 9229
+    },
+    {
+      "request": "launch",
+      "name": "Debug Current File's Tests",
+      "type": "pwa-node",
+      "program": "\${file}",
+      "cwd": "\${workspaceFolder}",
+      "runtimeExecutable": "deno",
+      "runtimeArgs": ["test", "--inspect-brk"],
+      "attachSimplePort": 9229
     }
   ]
 }
