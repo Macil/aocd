@@ -8,6 +8,11 @@ for await (const entry of Deno.readDir(".")) {
     dayScriptFilenames.push(entry.name);
   }
 }
+dayScriptFilenames.sort((a, b) => {
+  const aNum = Number(/\d+/.exec(a)![0]);
+  const bNum = Number(/\d+/.exec(b)![0]);
+  return aNum - bNum;
+});
 const p = Deno.run({
   cmd: [
     "deno",
