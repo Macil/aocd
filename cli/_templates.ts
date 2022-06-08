@@ -39,6 +39,26 @@ jobs:
   ]
 }
 `,
+  ".vscode/launch.json": `\
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "request": "launch",
+      "name": "Debug Current File",
+      "type": "pwa-node",
+      "program": "\${file}",
+      "cwd": "\${workspaceFolder}",
+      "runtimeExecutable": "deno",
+      "runtimeArgs": ["run", "--inspect-brk", "--allow-all"],
+      "attachSimplePort": 9229
+    }
+  ]
+}
+`,
   ".vscode/settings.json": `\
 {
   "deno.enable": true,
@@ -92,6 +112,11 @@ deno run -A day_1.ts
 You can run one day's tests with \`deno test day_1.ts\` or by clicking the play
 button next to it inside of Visual Studio Code. You can run all days' tests with
 \`deno task test\`.
+
+You can debug a script within Visual Studio Code by picking **Run** -> **Start
+Debugging** in the toolbar while the script is open, or you can debug a script
+by running \`deno run -A --inspect-brk day_1.ts\` and then opening
+\`chrome://inspect\` in Chrome.
 
 When you're confident about a solution, you can add the \`--submit\` (or \`-s\`)
 flag to submit the solution and see if it was correct:
