@@ -47,6 +47,11 @@ export function getAocdIfSet(): Aocd | undefined {
  * from.
  */
 export function setAocd(aocd: Aocd) {
+  // TODO take in AocdSource instead, so more methods can be added to Aocd
+  // without breaking setAocd() users.
+  // TODO figure out how getDefaultAocd() will work if Aocd becomes a
+  // concrete class and it's the source that's DefaultAocdSource.
+  // TODO set global so the value set here gets picked up by other versions.
   if (singleton) {
     throw new Error("Aocd instance is already set");
   }
