@@ -1,6 +1,6 @@
-import { getAocd } from "../mod.ts";
 import { basicAuth } from "https://deno.land/x/basic_auth@v1.0.2/mod.ts";
 import { Server } from "https://deno.land/std@0.142.0/http/server.ts";
+import type { DefaultAocdSource } from "../DefaultAocdSource.ts";
 
 export interface SafeRunOptions {
   scriptArg: string;
@@ -9,6 +9,7 @@ export interface SafeRunOptions {
 }
 
 export async function safeRun(
+  defaultAocdSource: DefaultAocdSource,
   options: SafeRunOptions,
 ): Promise<Deno.ProcessStatus> {
   const abortController = new AbortController();
@@ -29,7 +30,7 @@ export async function safeRun(
       if (url.pathname === "/getInput") {
         const year = Number(url.searchParams.get("year"));
         const day = Number(url.searchParams.get("day"));
-        const input = await getAocd().getInput(year, day);
+        const input = await defaultAocdSource.getInput(year, day);
         return new Response(input, {
           headers: {
             "Content-Type": "text/plain",
@@ -48,7 +49,12 @@ export async function safeRun(
         ) {
           return new Response("Invalid body", { status: 400 });
         }
-        const correct = await getAocd().submit(year, day, part, solution);
+        const correct = await defaultAocdSource.submit(
+          year,
+          day,
+          part,
+          solution,
+        );
         const responseBody = { correct };
         return new Response(JSON.stringify(responseBody), {
           headers: {

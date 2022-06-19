@@ -1,11 +1,9 @@
-import { Aocd, Config } from "./_common.ts";
+import type { AocdSource } from "./_common.ts";
 
-export class SafeRunAocd extends Aocd {
-  constructor(config: Partial<Config>, private apiAddr: string) {
-    super(config);
-  }
+export class SafeRunAocdSource implements AocdSource {
+  constructor(private readonly apiAddr: string) {}
 
-  override async getInput(year: number, day: number): Promise<string> {
+  async getInput(year: number, day: number): Promise<string> {
     const url = new URL(`${this.apiAddr}/getInput`);
     url.searchParams.set("year", String(year));
     url.searchParams.set("day", String(day));
@@ -17,7 +15,7 @@ export class SafeRunAocd extends Aocd {
     return input;
   }
 
-  override async submit(
+  async submit(
     year: number,
     day: number,
     part: number,

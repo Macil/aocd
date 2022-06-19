@@ -4,11 +4,13 @@ import {
   ValidationError,
 } from "https://deno.land/x/cliffy@v0.24.2/command/mod.ts";
 import { writeAll } from "https://deno.land/std@0.142.0/streams/conversion.ts";
-import { getDefaultAocd } from "./mod.ts";
 import { version } from "./version.ts";
 import { init } from "./cli/init.ts";
 import { start } from "./cli/start.ts";
 import { safeRun } from "./cli/safeRun.ts";
+import { DefaultAocdSource } from "./DefaultAocdSource.ts";
+
+const defaultAocdSource = new DefaultAocdSource();
 
 await new Command()
   .name("aocd")
@@ -48,18 +50,18 @@ await new Command()
   )
   .arguments("<value:string>")
   .action(async (_options, value) => {
-    await getDefaultAocd().setSessionCookie(value);
+    await defaultAocdSource.setSessionCookie(value);
     console.log("The session cookie was set and is now usable by aocd.");
   })
   .command("clear-data", "Forget the session cookie and cached inputs")
   .action(async () => {
-    await getDefaultAocd().clearData();
+    await defaultAocdSource.clearData();
     console.log("Session cookie and cached data has been cleared.");
   })
   .command("get-input", "View the input for a specific day's challenge")
   .arguments("<year:number> <day:number>")
   .action(async (_options, year, day) => {
-    const input = await getDefaultAocd().getInput(year, day);
+    const input = await defaultAocdSource.getInput(year, day);
     await writeAll(Deno.stdout, new TextEncoder().encode(input));
   })
   .command(
@@ -71,7 +73,7 @@ await new Command()
   .arguments("<script_arg:string>")
   .action(async (options, scriptArg) => {
     const denoFlags = options.denoFlags?.split(" ") || [];
-    const status = await safeRun({
+    const status = await safeRun(defaultAocdSource, {
       denoFlags,
       scriptArg,
       submit: options.submit === true,

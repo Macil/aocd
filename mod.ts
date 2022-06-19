@@ -1,87 +1,80 @@
 import { parse } from "https://deno.land/std@0.142.0/flags/mod.ts";
+import once from "https://deno.land/x/once@0.3.0/index.ts";
 
-import { DefaultAocd } from "./DefaultAocd.ts";
-export { DefaultAocd } from "./DefaultAocd.ts";
-import { Aocd, Solver } from "./_common.ts";
-import { SafeRunAocd } from "./SafeRunAocd.ts";
+import { AocdSource, Config, Options, PartResult, Solver } from "./_common.ts";
+import { Aocd } from "./Aocd.ts";
+import { DefaultAocdSource } from "./DefaultAocdSource.ts";
+import { SafeRunAocdSource } from "./SafeRunAocdSource.ts";
+import { configureAocd } from "./configureAocd.ts";
+
+export { Aocd, configureAocd };
 export * from "./_common.ts";
 export { version } from "./version.ts";
 
 let singleton: Aocd | undefined;
 
-/**
- * Main entrance into this module. Returns an automatically configured
- * Aocd instance by default. The instance may be manually configured by
- * using {@link setAocd} before this.
- */
-export function getAocd(): Aocd {
-  const existingAocd = getAocdIfSet();
-  if (existingAocd) {
-    return existingAocd;
-  }
-  const parsedArgs = parse(Deno.args, {
+const parsedArgs = once(() =>
+  parse(Deno.args, {
     boolean: ["s", "submit"],
     string: ["aocd-api-addr"],
-  });
-  const submit = Boolean(parsedArgs.s || parsedArgs.submit);
-  if (parsedArgs["aocd-api-addr"]) {
-    singleton = new SafeRunAocd({ submit }, parsedArgs["aocd-api-addr"]);
-  } else {
-    singleton = new DefaultAocd({ submit });
-  }
-  return singleton;
-}
+  })
+);
 
 /**
- * Get the current Aocd instance if it's set.
- * This is mainly for internal use but is exposed to help debugging.
- * Generally the {@link getAocd} function should be used instead of this.
+ * Main entrypoint into this library. Returns an automatically configured
+ * Aocd singleton instance.
+ *
+ * The configuration is based on values previously passed to
+ * {@link configureAocd} or CLI parameters inside `Deno.args`.
  */
-export function getAocdIfSet(): Aocd | undefined {
-  return singleton;
-}
-
-/**
- * Allow the Aocd singleton to be set if it hasn't been set yet.
- * Use this if you want to manually configure where Aocd gets its data
- * from.
- */
-export function setAocd(aocd: Aocd) {
-  // TODO take in AocdSource instead, so more methods can be added to Aocd
-  // without breaking setAocd() users.
-  // TODO figure out how getDefaultAocd() will work if Aocd becomes a
-  // concrete class and it's the source that's DefaultAocdSource.
-  // TODO set global so the value set here gets picked up by other versions.
+export function getAocd(): Aocd {
   if (singleton) {
-    throw new Error("Aocd instance is already set");
+    return singleton;
   }
-  singleton = aocd;
+  singleton = new Aocd(constructConfig());
+  return singleton;
+}
+
+function constructConfig(): Config {
+  // If globalThis.__aocd_config wasn't already set, set it to signal
+  // to future calls of `configureAocd()` that it's too late to configure
+  // Aocd.
+  // deno-lint-ignore no-explicit-any
+  const explicitlySetConfig: Partial<Config> = (globalThis as any)
+    .__aocd_config ??= {};
+
+  return {
+    options: explicitlySetConfig.options ?? optionsFromCLI(),
+    source: explicitlySetConfig.source ?? sourceFromCLI(),
+  };
+}
+
+function optionsFromCLI(): Partial<Options> {
+  const p = parsedArgs();
+  const submit = Boolean(p.s || p.submit);
+  return { submit };
+}
+
+function sourceFromCLI(): AocdSource {
+  const apiAddr: string | undefined = parsedArgs()["aocd-api-addr"];
+  if (apiAddr != null) {
+    return new SafeRunAocdSource(apiAddr);
+  } else {
+    return new DefaultAocdSource();
+  }
 }
 
 /**
- * Get the current {@link DefaultAocd} singleton. Throws an error if called
- * while `aocd safe-run` is being used.
- * The function {@link getAocd} is recommended over this unless you
- * specifically need functionality that doesn't work in safe-run mode.
+ * Run a solver with a given day's input.
+ *
+ * This method is a shortcut for calling the {@link Aocd.runPart} method of
+ * the {@link getAocd} return value.
  */
-export function getDefaultAocd(): DefaultAocd {
-  const aocd = getAocd();
-  if (aocd instanceof DefaultAocd) {
-    return aocd;
-  } else {
-    if (aocd instanceof SafeRunAocd) {
-      throw new Error("getDefaultAocd() is disallowed inside safe-run");
-    } else {
-      throw new Error("Aocd instance is not DefaultAocd instance");
-    }
-  }
-}
-
 export function runPart(
   year: number,
   day: number,
   part: number,
   solver: Solver,
-) {
+): Promise<PartResult> {
   return getAocd().runPart(year, day, part, solver);
 }

@@ -1,8 +1,8 @@
 import memoizy from "https://deno.land/x/memoizy@1.0.0/mod.ts";
-import { Aocd } from "./_common.ts";
+import type { AocdSource } from "./_common.ts";
 import { DbManager } from "./_DbManager.ts";
 
-export class DefaultAocd extends Aocd {
+export class DefaultAocdSource implements AocdSource {
   private dbManager = new DbManager();
 
   private readonly getSessionCookie = memoizy(async (): Promise<string> => {
@@ -51,30 +51,29 @@ export class DefaultAocd extends Aocd {
     return req.text();
   }
 
-  override readonly getInput: (year: number, day: number) => Promise<string> =
-    memoizy(
-      async (year: number, day: number): Promise<string> => {
-        const cacheDb = await this.dbManager.getCacheDb();
-        const cachedResults = cacheDb.query<[string]>(
-          "SELECT input FROM inputs WHERE year = ? AND day = ?",
-          [year, day],
-        );
-        if (cachedResults[0]) {
-          return cachedResults[0][0];
-        }
+  readonly getInput: (year: number, day: number) => Promise<string> = memoizy(
+    async (year: number, day: number): Promise<string> => {
+      const cacheDb = await this.dbManager.getCacheDb();
+      const cachedResults = cacheDb.query<[string]>(
+        "SELECT input FROM inputs WHERE year = ? AND day = ?",
+        [year, day],
+      );
+      if (cachedResults[0]) {
+        return cachedResults[0][0];
+      }
 
-        const input = await this.fetchInput(year, day);
-        cacheDb.query(
-          "INSERT INTO inputs (year, day, input) VALUES (?, ?, ?)",
-          [
-            year,
-            day,
-            input,
-          ],
-        );
-        return input;
-      },
-    );
+      const input = await this.fetchInput(year, day);
+      cacheDb.query(
+        "INSERT INTO inputs (year, day, input) VALUES (?, ?, ?)",
+        [
+          year,
+          day,
+          input,
+        ],
+      );
+      return input;
+    },
+  );
 
   clearData() {
     return this.dbManager.clearData();
@@ -106,7 +105,7 @@ export class DefaultAocd extends Aocd {
     return match[1];
   }
 
-  override readonly submit: (
+  readonly submit: (
     year: number,
     day: number,
     part: number,
