@@ -3,7 +3,7 @@ import {
   CompletionsCommand,
   ValidationError,
 } from "https://deno.land/x/cliffy@v0.24.2/command/mod.ts";
-import { writeAll } from "https://deno.land/std@0.142.0/streams/conversion.ts";
+import { writeAll } from "https://deno.land/std@0.144.0/streams/conversion.ts";
 import { version } from "./version.ts";
 import { init } from "./cli/init.ts";
 import { start } from "./cli/start.ts";

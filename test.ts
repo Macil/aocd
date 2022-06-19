@@ -3,7 +3,7 @@ import sinon from "https://cdn.skypack.dev/sinon@14.0.0?dts";
 import {
   assert,
   assertEquals,
-} from "https://deno.land/std@0.142.0/testing/asserts.ts";
+} from "https://deno.land/std@0.144.0/testing/asserts.ts";
 
 class TestAocdSource implements AocdSource {
   getInput = sinon.spy((year: number, day: number) =>

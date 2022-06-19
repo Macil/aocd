@@ -1,4 +1,4 @@
-import { parse } from "https://deno.land/std@0.142.0/flags/mod.ts";
+import { parse } from "https://deno.land/std@0.144.0/flags/mod.ts";
 import once from "https://deno.land/x/once@0.3.0/index.ts";
 
 import { AocdSource, Config, Options, PartResult, Solver } from "./_common.ts";
