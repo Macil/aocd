@@ -157,10 +157,10 @@ function part1(input: string): number {
   throw new Error("TODO");
 }
 
-function part2(input: string): number {
-  const items = parse(input);
-  throw new Error("TODO");
-}
+// function part2(input: string): number {
+//   const items = parse(input);
+//   throw new Error("TODO");
+// }
 
 if (import.meta.main) {
   runPart(${year}, ${day}, 1, part1);
@@ -179,8 +179,8 @@ Deno.test("part1", () => {
   assertEquals(part1(TEST_INPUT), 11);
 });
 
-Deno.test("part2", () => {
-  assertEquals(part2(TEST_INPUT), 12);
-});
+// Deno.test("part2", () => {
+//   assertEquals(part2(TEST_INPUT), 12);
+// });
 `;
 }

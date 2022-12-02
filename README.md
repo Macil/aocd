@@ -60,10 +60,10 @@ function part1(input: string): number {
   throw new Error("TODO");
 }
 
-function part2(input: string): number {
-  const items = parse(input);
-  throw new Error("TODO");
-}
+// function part2(input: string): number {
+//   const items = parse(input);
+//   throw new Error("TODO");
+// }
 
 if (import.meta.main) {
   runPart(2022, 1, 1, part1);
@@ -82,9 +82,9 @@ Deno.test("part1", () => {
   assertEquals(part1(TEST_INPUT), 11);
 });
 
-Deno.test("part2", () => {
-  assertEquals(part2(TEST_INPUT), 12);
-});
+// Deno.test("part2", () => {
+//   assertEquals(part2(TEST_INPUT), 12);
+// });
 ```
 
 You are expected to complete the `parse()`, `part1()`, and `part2()` functions.
@@ -101,8 +101,8 @@ test inputs and tests if the problem description gives multiple examples.
 
 The `if (import.meta.main) {` check around the `runPart()` calls is so that the
 solutions are not run when tests are run. You are not expected to modify that
-if-block or its contents except to uncomment the part 2 `runPart()` call once
-you're ready to work on part 2's solution.
+if-block or its contents except to uncomment the `part2()` function, its
+`runPart()` call, and its test once you're ready to work on part 2's solution.
 
 An example of complete solution based on this template using this library can be
 seen at
