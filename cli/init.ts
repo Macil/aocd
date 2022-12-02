@@ -1,7 +1,7 @@
+import { basename, dirname } from "https://deno.land/std@0.167.0/path/mod.ts";
+import { createDayScript } from "./_createDayScript.ts";
 import { initTemplates, readme } from "./_templates.ts";
 import { writeNewFile } from "./_writeNewFile.ts";
-import { basename, dirname } from "https://deno.land/std@0.144.0/path/mod.ts";
-import { createDayScript } from "./_createDayScript.ts";
 
 export interface InitOptions {
   year: number;

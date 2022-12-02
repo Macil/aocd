@@ -1,15 +1,15 @@
-import { parse } from "https://deno.land/std@0.144.0/flags/mod.ts";
+import { parse } from "https://deno.land/std@0.167.0/flags/mod.ts";
 import once from "https://deno.land/x/once@0.3.0/index.ts";
 
-import { AocdSource, Config, Options, PartResult, Solver } from "./_common.ts";
 import { Aocd } from "./Aocd.ts";
+import { configureAocd } from "./configureAocd.ts";
 import { DefaultAocdSource } from "./DefaultAocdSource.ts";
 import { SafeRunAocdSource } from "./SafeRunAocdSource.ts";
-import { configureAocd } from "./configureAocd.ts";
+import { AocdSource, Config, Options, PartResult, Solver } from "./_common.ts";
 
-export { Aocd, configureAocd };
-export * from "./_common.ts";
 export { version } from "./version.ts";
+export * from "./_common.ts";
+export { Aocd, configureAocd };
 
 let singleton: Aocd | undefined;
 
