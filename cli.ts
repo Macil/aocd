@@ -1,9 +1,9 @@
-import { writeAll } from "https://deno.land/std@0.167.0/streams/conversion.ts";
+import { writeAll } from "https://deno.land/std@0.167.0/streams/write_all.ts";
 import {
   Command,
   CompletionsCommand,
   ValidationError,
-} from "https://deno.land/x/cliffy@v0.24.2/command/mod.ts";
+} from "https://deno.land/x/cliffy@v0.25.4/command/mod.ts";
 import { init } from "./cli/init.ts";
 import { safeRun } from "./cli/safeRun.ts";
 import { start } from "./cli/start.ts";
