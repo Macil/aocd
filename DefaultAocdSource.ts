@@ -1,4 +1,5 @@
 import memoizy from "https://deno.land/x/memoizy@1.0.0/mod.ts";
+import { userAgent } from "./version.ts";
 import type { AocdSource } from "./_common.ts";
 import { DbManager } from "./_DbManager.ts";
 
@@ -43,7 +44,12 @@ export class DefaultAocdSource implements AocdSource {
     const AOC_SESSION = await this.getSessionCookie();
     const req = await fetch(
       url,
-      { headers: { Cookie: `session=${AOC_SESSION}` } },
+      {
+        headers: {
+          Cookie: `session=${AOC_SESSION}`,
+          "User-Agent": userAgent,
+        },
+      },
     );
     if (!req.ok) {
       throw new Error(`Bad response: ${req.status}`);
@@ -88,7 +94,12 @@ export class DefaultAocdSource implements AocdSource {
       const AOC_SESSION = await this.getSessionCookie();
       const req = await fetch(
         url,
-        { headers: { Cookie: `session=${AOC_SESSION}` } },
+        {
+          headers: {
+            Cookie: `session=${AOC_SESSION}`,
+            "User-Agent": userAgent,
+          },
+        },
       );
       if (!req.ok) {
         throw new Error(`Bad response: ${req.status}`);
@@ -163,6 +174,7 @@ export class DefaultAocdSource implements AocdSource {
         headers: {
           Cookie: `session=${AOC_SESSION}`,
           "Content-Type": "application/x-www-form-urlencoded",
+          "User-Agent": userAgent,
         },
         body: new URLSearchParams({
           level: String(part),

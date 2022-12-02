@@ -1,3 +1,4 @@
+import { userAgent } from "./version.ts";
 import type { AocdSource } from "./_common.ts";
 
 export class SafeRunAocdSource implements AocdSource {
@@ -7,7 +8,11 @@ export class SafeRunAocdSource implements AocdSource {
     const url = new URL(`${this.apiAddr}/getInput`);
     url.searchParams.set("year", String(year));
     url.searchParams.set("day", String(day));
-    const req = await fetch(url.toString());
+    const req = await fetch(url.toString(), {
+      headers: {
+        "User-Agent": userAgent,
+      },
+    });
     if (!req.ok) {
       throw new Error(`Bad status: ${req.status}`);
     }
@@ -27,6 +32,7 @@ export class SafeRunAocdSource implements AocdSource {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "User-Agent": userAgent,
       },
       body: JSON.stringify(body),
     });
