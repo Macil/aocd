@@ -104,8 +104,8 @@ solutions are not run when tests are run. You are not expected to modify that
 if-block or its contents except to uncomment the `part2()` function, its
 `runPart()` call, and its test once you're ready to work on part 2's solution.
 
-An example of complete solution based on this template using this library can be
-seen at
+An example of a complete solution based on this template using this library can
+be seen at
 [Macil/deno-advent2021/day_1.ts](https://github.com/Macil/deno-advent2021/blob/main/day_1.ts).
 
 You can run a solution script like this:
