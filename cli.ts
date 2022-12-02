@@ -82,6 +82,6 @@ await new Command()
   })
   .command("completions", new CompletionsCommand())
   .parse(
-    // Work around https://github.com/c4spar/deno-cliffy/issues/387
+    // Work around https://github.com/c4spar/deno-cliffy/issues/499
     Deno.args.length !== 0 ? Deno.args : ["-h"],
   );
