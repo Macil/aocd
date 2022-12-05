@@ -16,6 +16,9 @@ indent_size = 2
 *~
 .DS_Store
 `,
+  ".gitattributes": `\
+* text=auto eol=lf
+`,
   ".github/workflows/tests.yml": `\
 name: tests
 on: [push]
