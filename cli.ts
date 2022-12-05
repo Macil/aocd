@@ -3,7 +3,7 @@ import {
   Command,
   CompletionsCommand,
   ValidationError,
-} from "https://deno.land/x/cliffy@v0.25.4/command/mod.ts";
+} from "https://deno.land/x/cliffy@v0.25.5/command/mod.ts";
 import { init } from "./cli/init.ts";
 import { safeRun } from "./cli/safeRun.ts";
 import { start } from "./cli/start.ts";
@@ -81,7 +81,4 @@ await new Command()
     Deno.exit(status.code);
   })
   .command("completions", new CompletionsCommand())
-  .parse(
-    // Work around https://github.com/c4spar/deno-cliffy/issues/499
-    Deno.args.length !== 0 ? Deno.args : ["-h"],
-  );
+  .parse();
