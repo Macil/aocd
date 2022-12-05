@@ -1,5 +1,5 @@
 import { userAgent } from "./version.ts";
-import type { AocdSource } from "./_common.ts";
+import type { Answer, AocdSource } from "./_common.ts";
 
 export class SafeRunAocdSource implements AocdSource {
   constructor(private readonly apiAddr: string) {}
@@ -24,7 +24,7 @@ export class SafeRunAocdSource implements AocdSource {
     year: number,
     day: number,
     part: number,
-    solution: number,
+    solution: Answer,
   ): Promise<boolean> {
     const url = new URL(`${this.apiAddr}/submit`);
     const body = { year, day, part, solution };

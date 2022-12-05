@@ -45,7 +45,8 @@ export async function safeRun(
         const { year, day, part, solution } = body;
         if (
           typeof year !== "number" || typeof day !== "number" ||
-          typeof part !== "number" || typeof solution !== "number"
+          typeof part !== "number" ||
+          !["number", "string"].includes(typeof solution)
         ) {
           return new Response("Invalid body", { status: 400 });
         }

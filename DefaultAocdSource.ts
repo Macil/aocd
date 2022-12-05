@@ -1,6 +1,6 @@
 import memoizy from "https://deno.land/x/memoizy@1.0.0/mod.ts";
 import { userAgent } from "./version.ts";
-import type { AocdSource } from "./_common.ts";
+import type { Answer, AocdSource } from "./_common.ts";
 import { DbManager } from "./_DbManager.ts";
 
 export class DefaultAocdSource implements AocdSource {
@@ -120,22 +120,26 @@ export class DefaultAocdSource implements AocdSource {
     year: number,
     day: number,
     part: number,
-    solution: number,
+    solution: Answer,
   ) => Promise<boolean> = memoizy(
     async (
       year: number,
       day: number,
       part: number,
-      solution: number,
+      solution: Answer,
     ): Promise<boolean> => {
       const cacheDb = await this.dbManager.getCacheDb();
-      const cachedResults = cacheDb.query<[number, number]>(
+      const cachedResults = cacheDb.query<[string, number]>(
         "SELECT solution, correct FROM sent_solutions WHERE year = ? AND day = ? AND part = ? AND (solution = ? OR correct)",
         [year, day, part, solution],
       );
       if (cachedResults[0]) {
         const [cachedSolution, correct] = cachedResults[0];
-        if (cachedSolution === solution) {
+        if (
+          typeof solution === "number"
+            ? Number(cachedSolution) === solution
+            : String(cachedSolution) === solution
+        ) {
           return correct !== 0;
         } else {
           return false;
@@ -161,7 +165,7 @@ export class DefaultAocdSource implements AocdSource {
     year: number,
     day: number,
     part: number,
-    solution: number,
+    solution: Answer,
   ): Promise<boolean> {
     const url = `https://adventofcode.com/${year}/day/${day}/answer`;
     console.warn(`Submitting to ${url}`);
@@ -204,15 +208,17 @@ export class DefaultAocdSource implements AocdSource {
         throw new Error("Could not find correct answer in page");
       }
       relevantProblemPart = relevantProblemPart.split("<article")[0];
-      const match = /Your puzzle answer was <code>(\d+)<\/code>/.exec(
+      const match = /Your puzzle answer was <code>([^<]+)<\/code>/.exec(
         relevantProblemPart,
       );
       if (!match) {
         console.error("Response:", JSON.stringify(mainHtml));
         throw new Error("Could not find correct answer in page");
       }
-      const correctAnswer = Number(match[1]);
-      return solution === correctAnswer;
+      const correctAnswer = match[1];
+      return typeof solution === "number"
+        ? Number(correctAnswer) === solution
+        : String(correctAnswer) === solution;
     }
 
     console.error("Response:", JSON.stringify(mainHtml));

@@ -1,4 +1,11 @@
-import { AocdSource, Config, Options, PartResult, Solver } from "./_common.ts";
+import {
+  Answer,
+  AocdSource,
+  Config,
+  Options,
+  PartResult,
+  Solver,
+} from "./_common.ts";
 
 const defaultOptions: Options = {
   submit: false,
@@ -77,7 +84,7 @@ export class Aocd {
     year: number,
     day: number,
     part: number,
-    solution: number,
+    solution: Answer,
   ): Promise<boolean> {
     return this.source.submit(year, day, part, solution);
   }

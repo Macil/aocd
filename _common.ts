@@ -15,7 +15,7 @@ export interface AocdSource {
     year: number,
     day: number,
     part: number,
-    solution: number,
+    solution: Answer,
   ): Promise<boolean>;
 }
 
@@ -27,9 +27,10 @@ export interface Options {
   printResults: boolean;
 }
 
-export type Solver = (input: string) => number | Promise<number>;
+export type Answer = number | string;
+export type Solver = (input: string) => Answer | Promise<Answer>;
 
 export interface PartResult {
-  answer: number;
+  answer: Answer;
   correct?: boolean;
 }

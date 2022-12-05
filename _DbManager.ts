@@ -61,7 +61,7 @@ export class DbManager {
         year INTEGER NOT NULL,
         day INTEGER NOT NULL,
         part INTEGER NOT NULL,
-        solution INTEGER NOT NULL,
+        solution TEXT NOT NULL,
         timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         correct INTEGER NOT NULL,
         PRIMARY KEY (year, day, part, solution)
