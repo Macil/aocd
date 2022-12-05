@@ -24,7 +24,9 @@ export class DefaultAocdSource implements AocdSource {
     if (results[0]) {
       return results[0][0];
     }
-    throw new Error("Could not find Advent of Code session cookie");
+    throw new Error(
+      "Could not find Advent of Code session cookie. You need to install the aocd CLI tool and run the `aocd set-cookie` command first (https://github.com/Macil/aocd#install).",
+    );
   });
 
   async setSessionCookie(session: string) {
