@@ -28,9 +28,10 @@ export interface Options {
 }
 
 export type Answer = number | string;
-export type Solver = (input: string) => Answer | Promise<Answer>;
+export type MaybeAnswer = Answer | null | undefined;
+export type Solver = (input: string) => MaybeAnswer | Promise<MaybeAnswer>;
 
 export interface PartResult {
-  answer: Answer;
+  answer: MaybeAnswer;
   correct?: boolean;
 }

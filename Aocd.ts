@@ -38,13 +38,19 @@ export class Aocd {
       const answer = await solver(input);
 
       let correct: boolean | undefined;
-      if (this.options.submit) {
+      if (this.options.submit && answer != null) {
         correct = await this.submit(year, day, part, answer);
       }
 
       return () => {
         if (this.options.printResults) {
-          console.log(`${year} Day ${day} Part ${part}: ${answer}`);
+          if (answer == null) {
+            console.log(
+              `${year} Day ${day} Part ${part} finished executing with no answer returned.`,
+            );
+          } else {
+            console.log(`${year} Day ${day} Part ${part}: ${answer}`);
+          }
           if (correct != undefined) {
             console.log(
               `The answer has been submitted and it is ${

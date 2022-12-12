@@ -88,9 +88,18 @@ Deno.test("part1", () => {
 ```
 
 You are expected to complete the `parse()`, `part1()`, and `part2()` functions.
-The `parse()` function defined in the template works fine for inputs that
-contain lines with one number each, but you must adjust the code for other types
-of input.
+
+The `part1()` and `part2()` functions may return a number, a string, or
+null/undefined. If you return null/undefined, the `--submit` functionality of
+aocd will not be able to submit an answer automatically.
+
+You are not required to use a `parse()` function like this. It's provided in the
+template merely as an example of how to share code between the `part1()` and
+`part2()` functions. The example `parse()` function in the template works fine
+for problems with inputs that contain lines with one number each, but you must
+adjust the code for other types of input. Depending on the problem, you may want
+to define a custom interface and return it or an array of it from the `parse()`
+function.
 
 You are also able to have tests within the script. You are expected to replace
 the `TEST_INPUT` contents with test input from the Advent of Code problem
