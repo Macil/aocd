@@ -54,6 +54,7 @@ export class DefaultAocdSource implements AocdSource {
       },
     );
     if (!req.ok) {
+      await this.logResponseError(req);
       throw new Error(`Bad response: ${req.status}`);
     }
     return req.text();
@@ -104,6 +105,7 @@ export class DefaultAocdSource implements AocdSource {
         },
       );
       if (!req.ok) {
+        await this.logResponseError(req);
         throw new Error(`Bad response: ${req.status}`);
       }
       return this.getMainElementHtml(await req.text());
@@ -189,6 +191,7 @@ export class DefaultAocdSource implements AocdSource {
       },
     );
     if (!req.ok) {
+      await this.logResponseError(req);
       throw new Error(`Bad response: ${req.status}`);
     }
     const mainHtml = this.getMainElementHtml(await req.text());
@@ -223,7 +226,29 @@ export class DefaultAocdSource implements AocdSource {
         : String(correctAnswer) === solution;
     }
 
+    if (mainHtml.includes("To play, please identify yourself")) {
+      throw new Error(
+        "Session cookie is invalid. Set it with `aoc set-cookie COOKIE`.",
+      );
+    }
+
     console.error("Response:", JSON.stringify(mainHtml));
     throw new Error("Could not parse response");
+  }
+
+  private async logResponseError(req: Response) {
+    const text = await req.text();
+    if (req.status === 500) {
+      console.error(
+        "Unknown server error. Is the session cookie correct? Try setting it with `aoc set-cookie COOKIE`.",
+      );
+    } else if (req.status === 400 && text.includes("Please log in")) {
+      console.error(
+        "Session cookie is invalid. Set it with `aoc set-cookie COOKIE`.",
+      );
+    } else {
+      console.error(`Got status ${req.status}. Response:`);
+      console.error(JSON.stringify(text));
+    }
   }
 }
