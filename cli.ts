@@ -3,7 +3,7 @@ import {
   Command,
   CompletionsCommand,
   ValidationError,
-} from "https://deno.land/x/cliffy@v0.25.5/command/mod.ts";
+} from "https://deno.land/x/cliffy@v0.25.7/command/mod.ts";
 import { DefaultAocdSource } from "./DefaultAocdSource.ts";
 import { init } from "./cli/init.ts";
 import { safeRun } from "./cli/safeRun.ts";
