@@ -52,21 +52,21 @@ jobs:
     {
       "request": "launch",
       "name": "Debug Current File",
-      "type": "pwa-node",
+      "type": "node",
       "program": "\${file}",
       "cwd": "\${workspaceFolder}",
       "runtimeExecutable": "deno",
-      "runtimeArgs": ["run", "--inspect-brk", "--allow-all"],
+      "runtimeArgs": ["run", "--inspect-wait", "--allow-all"],
       "attachSimplePort": 9229
     },
     {
       "request": "launch",
       "name": "Debug Current File's Tests",
-      "type": "pwa-node",
+      "type": "node",
       "program": "\${file}",
       "cwd": "\${workspaceFolder}",
       "runtimeExecutable": "deno",
-      "runtimeArgs": ["test", "--inspect-brk"],
+      "runtimeArgs": ["test", "--inspect-wait"],
       "attachSimplePort": 9229
     }
   ]
