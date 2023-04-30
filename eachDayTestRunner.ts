@@ -26,14 +26,14 @@ for await (
 }
 regularTestFilenames.sort();
 
-const p = Deno.run({
-  cmd: [
-    "deno",
+const command = new Deno.Command("deno", {
+  args: [
     "test",
     ...regularTestFilenames,
     ...dayScriptFilenames,
     ...Deno.args,
   ],
 });
-const status = await p.status();
+const child = command.spawn();
+const status = await child.status;
 Deno.exit(status.code);

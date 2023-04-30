@@ -11,7 +11,7 @@ export interface SafeRunOptions {
 export async function safeRun(
   defaultAocdSource: DefaultAocdSource,
   options: SafeRunOptions,
-): Promise<Deno.ProcessStatus> {
+): Promise<Deno.CommandStatus> {
   const abortController = new AbortController();
 
   const password = crypto.randomUUID();
@@ -102,17 +102,18 @@ export async function safeRun(
         denoFlags.push(`--allow-net=${apiDomain}`);
       }
 
-      const p = Deno.run({
-        cmd: [
-          "deno",
+      const command = new Deno.Command("deno", {
+        args: [
           "run",
           ...denoFlags,
           options.scriptArg,
           `--aocd-api-addr=${apiAddr}`,
           ...(options.submit ? ["--submit"] : []),
         ],
+        signal: abortController.signal,
       });
-      const status = await p.status();
+      const child = command.spawn();
+      const status = await child.status;
       abortController.abort();
       return status;
     };
