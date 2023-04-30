@@ -1,13 +1,13 @@
-import { writeAll } from "https://deno.land/std@0.167.0/streams/write_all.ts";
+import { writeAll } from "https://deno.land/std@0.185.0/streams/write_all.ts";
 import {
   Command,
   CompletionsCommand,
   ValidationError,
 } from "https://deno.land/x/cliffy@v0.25.5/command/mod.ts";
+import { DefaultAocdSource } from "./DefaultAocdSource.ts";
 import { init } from "./cli/init.ts";
 import { safeRun } from "./cli/safeRun.ts";
 import { start } from "./cli/start.ts";
-import { DefaultAocdSource } from "./DefaultAocdSource.ts";
 import { version } from "./version.ts";
 
 const defaultAocdSource = new DefaultAocdSource();

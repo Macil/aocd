@@ -1,4 +1,4 @@
-import { writeAll } from "https://deno.land/std@0.167.0/streams/write_all.ts";
+import { writeAll } from "https://deno.land/std@0.185.0/streams/write_all.ts";
 
 /** Creates a new file with the given contents. Never overwrites existing files. */
 export async function writeNewFile(fileName: string, contents: string) {
