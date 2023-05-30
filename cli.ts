@@ -1,4 +1,4 @@
-import { writeAll } from "https://deno.land/std@0.185.0/streams/write_all.ts";
+import { writeAll } from "https://deno.land/std@0.190.0/streams/write_all.ts";
 import {
   Command,
   CompletionsCommand,
