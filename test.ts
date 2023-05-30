@@ -1,8 +1,8 @@
-import sinon from "https://cdn.skypack.dev/sinon@15.0.0?dts";
 import {
   assert,
   assertEquals,
 } from "https://deno.land/std@0.190.0/testing/asserts.ts";
+import sinon from "npm:sinon@^15.1.0";
 import { Aocd, AocdSource } from "./mod.ts";
 
 class TestAocdSource implements AocdSource {
