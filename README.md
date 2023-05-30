@@ -101,12 +101,20 @@ adjust the code for other types of input. Depending on the problem, you may want
 to define a custom interface and return it or an array of it from the `parse()`
 function.
 
-You are also able to have tests within the script. You are expected to replace
-the `TEST_INPUT` contents with test input from the Advent of Code problem
-description and then update the expected answers (`11` and `12` in the Deno.test
-blocks) to the expected answers given in the problem description. There is no
-specific structure on tests that this library requires; you may want to add more
-test inputs and tests if the problem description gives multiple examples.
+You are also able to have tests directly within the script, unlike in usual Deno
+projects. For Advent of Code, it's usually the most convenient to have the code
+related to a single day in a single file. Deno's standard "deno test" command
+with no arguments expects tests to be in separate files named "test.ts" or with
+the extension ".test.ts". This template sets up a "deno task test" command to be
+used in place of "deno test" which also runs tests in all "day_#.ts" files. All
+arguments to "deno task test" are passed to "deno test".
+
+For the tests, you are expected to replace the `TEST_INPUT` contents with test
+input from the Advent of Code problem description and then update the expected
+answers (`11` and `12` in the Deno.test blocks) to the expected answers given in
+the problem description. You may remove the tests or add additional ones. The
+tests are not required to use the `TEST_INPUT` variable, so feel free to add
+tests that use other inputs.
 
 The `if (import.meta.main) {` check around the `runPart()` calls is so that the
 solutions are not run when tests are run. You are not expected to modify that
