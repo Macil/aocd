@@ -67,7 +67,7 @@ export class Aocd {
       const showResult = await runAndGetResultShower();
       return showResult();
     } else {
-      if (this.options.resultsInOrder) {
+      if (this.options.concurrency && this.options.resultsInOrder) {
         const showResultPromise = runAndGetResultShower();
         runAndGetResultShower = () => showResultPromise;
       }

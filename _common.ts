@@ -30,7 +30,10 @@ export interface Options {
   concurrency: boolean;
   /** @default true */
   printResults: boolean;
-  /** @default true */
+  /**
+   * When using concurrency mode, still print the results in order.
+   * @default true
+   */
   resultsInOrder: boolean;
 }
 
