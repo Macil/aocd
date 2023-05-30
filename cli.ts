@@ -70,6 +70,7 @@ await new Command()
   )
   .option("--deno-flags=<flags:string>", "Pass extra flags to Deno")
   .option("-s, --submit", "Submit answers")
+  .option("-t, --time", "Show the runtimes of the solvers")
   .arguments("<script_arg:string>")
   .action(async (options, scriptArg) => {
     const denoFlags = options.denoFlags?.split(" ") || [];
@@ -77,6 +78,7 @@ await new Command()
       denoFlags,
       scriptArg,
       submit: options.submit === true,
+      time: options.time === true,
     });
     Deno.exit(status.code);
   })

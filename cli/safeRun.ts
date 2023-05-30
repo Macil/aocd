@@ -6,6 +6,7 @@ export interface SafeRunOptions {
   scriptArg: string;
   denoFlags?: string[];
   submit?: boolean;
+  time?: boolean;
 }
 
 export async function safeRun(
@@ -109,6 +110,7 @@ export async function safeRun(
           options.scriptArg,
           `--aocd-api-addr=${apiAddr}`,
           ...(options.submit ? ["--submit"] : []),
+          ...(options.time ? ["--time"] : []),
         ],
         signal: abortController.signal,
       });

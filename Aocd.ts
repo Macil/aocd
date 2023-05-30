@@ -1,13 +1,15 @@
-import {
+import type {
   Answer,
   AocdSource,
   Config,
+  MaybeAnswer,
   Options,
   PartResult,
   Solver,
 } from "./_common.ts";
 
 const defaultOptions: Options = {
+  time: false,
   submit: false,
   concurrency: false,
   printResults: true,
@@ -35,7 +37,19 @@ export class Aocd {
     const inputPromise = this.getInput(year, day);
     let runAndGetResultShower = async (): Promise<() => PartResult> => {
       const input = await inputPromise;
-      const answer = await solver(input);
+
+      let answer: MaybeAnswer;
+      try {
+        if (this.options.time) {
+          console.log(`part ${part} starting`);
+          console.time(`part ${part}`);
+        }
+        answer = await solver(input);
+      } finally {
+        if (this.options.time) {
+          console.timeEnd(`part ${part}`);
+        }
+      }
 
       let correct: boolean | undefined;
       if (this.options.submit && answer != null) {

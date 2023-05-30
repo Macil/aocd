@@ -140,6 +140,13 @@ Debugging** in the toolbar while the script is open, or you can debug a script
 by running `deno run -A --inspect-brk day_1.ts` and then opening
 `chrome://inspect` in Chrome.
 
+If you want to see the runtime of your solutions, you can add the `--time` (or
+`-t`) flag:
+
+```
+deno run -A day_1.ts --time
+```
+
 When you're confident about a solution, you can add the `--submit` (or `-s`)
 flag to submit the solution and see if it was correct:
 

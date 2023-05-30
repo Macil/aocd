@@ -4,10 +4,16 @@ import once from "https://deno.land/x/once@0.3.0/index.ts";
 import { Aocd } from "./Aocd.ts";
 import { DefaultAocdSource } from "./DefaultAocdSource.ts";
 import { SafeRunAocdSource } from "./SafeRunAocdSource.ts";
-import { AocdSource, Config, Options, PartResult, Solver } from "./_common.ts";
+import type {
+  AocdSource,
+  Config,
+  Options,
+  PartResult,
+  Solver,
+} from "./_common.ts";
 import { configureAocd } from "./configureAocd.ts";
 
-export * from "./_common.ts";
+export type * from "./_common.ts";
 export { version } from "./version.ts";
 export { Aocd, configureAocd };
 
@@ -15,7 +21,7 @@ let singleton: Aocd | undefined;
 
 const parsedArgs = once(() =>
   parse(Deno.args, {
-    boolean: ["s", "submit"],
+    boolean: ["s", "submit", "t", "time"],
     string: ["aocd-api-addr"],
   })
 );
@@ -52,7 +58,8 @@ function constructConfig(): Config {
 function optionsFromCLI(): Partial<Options> {
   const p = parsedArgs();
   const submit = Boolean(p.s || p.submit);
-  return { submit };
+  const time = Boolean(p.t || p.time);
+  return { submit, time };
 }
 
 function sourceFromCLI(): AocdSource {
