@@ -10,8 +10,8 @@ import {
 const defaultOptions: Options = {
   submit: false,
   concurrency: false,
-  resultsInOrder: true,
   printResults: true,
+  resultsInOrder: true,
 };
 
 export class Aocd {

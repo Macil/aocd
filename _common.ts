@@ -21,10 +21,17 @@ export interface AocdSource {
 
 // If you plan to update this interface, see the note on Config above.
 export interface Options {
+  /** @default false */
   submit: boolean;
+  /**
+   * Execute the solvers concurrently. Only has benefit if they're asynchronous functions.
+   * @default false
+   */
   concurrency: boolean;
-  resultsInOrder: boolean;
+  /** @default true */
   printResults: boolean;
+  /** @default true */
+  resultsInOrder: boolean;
 }
 
 export type Answer = number | string;
