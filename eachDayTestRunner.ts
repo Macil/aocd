@@ -1,4 +1,4 @@
-import { walk } from "https://deno.land/std@0.190.0/fs/walk.ts";
+import { walk } from "https://deno.land/std@0.203.0/fs/walk.ts";
 
 // This module does the equivalent of running `deno test REGULAR_TESTS... day_*.ts "$@"`.
 

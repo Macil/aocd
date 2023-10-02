@@ -1,5 +1,3 @@
-import { writeAll } from "https://deno.land/std@0.190.0/streams/write_all.ts";
-
 /** Creates a new file with the given contents. Never overwrites existing files. */
 export async function writeNewFile(fileName: string, contents: string) {
   const newFile = await Deno.open(fileName, {
@@ -7,7 +5,8 @@ export async function writeNewFile(fileName: string, contents: string) {
     createNew: true,
   });
   try {
-    await writeAll(newFile, new TextEncoder().encode(contents));
+    await ReadableStream.from([new TextEncoder().encode(contents)])
+      .pipeTo(newFile.writable);
   } finally {
     newFile.close();
   }

@@ -1,4 +1,3 @@
-import { writeAll } from "https://deno.land/std@0.190.0/streams/write_all.ts";
 import {
   Command,
   CompletionsCommand,
@@ -62,7 +61,8 @@ await new Command()
   .arguments("<year:number> <day:number>")
   .action(async (_options, year, day) => {
     const input = await defaultAocdSource.getInput(year, day);
-    await writeAll(Deno.stdout, new TextEncoder().encode(input));
+    await ReadableStream.from([new TextEncoder().encode(input)])
+      .pipeTo(Deno.stdout.writable);
   })
   .command(
     "safe-run",
