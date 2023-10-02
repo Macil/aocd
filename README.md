@@ -105,9 +105,10 @@ You are also able to have tests directly within the script, unlike in usual Deno
 projects. For Advent of Code, it's usually the most convenient to have the code
 related to a single day in a single file. Deno's standard "deno test" command
 with no arguments expects tests to be in separate files named "test.ts" or with
-the extension ".test.ts". This template sets up a "deno task test" command to be
-used in place of "deno test" which also runs tests in all "day_#.ts" files. All
-arguments to "deno task test" are passed to "deno test".
+the extension ".test.ts". Aocd's project template sets up `deno.json` to add a
+"deno task test" command that can be used in place of "deno test" to also run
+tests in all "day_#.ts" files. All arguments to "deno task test" are passed to
+"deno test".
 
 For the tests, you are expected to replace the `TEST_INPUT` contents with test
 input from the Advent of Code problem description and then update the expected
