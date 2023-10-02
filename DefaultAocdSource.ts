@@ -228,7 +228,7 @@ export class DefaultAocdSource implements AocdSource {
 
     if (mainHtml.includes("To play, please identify yourself")) {
       throw new Error(
-        "Session cookie is invalid. Set it with `aoc set-cookie COOKIE`.",
+        "Session cookie is invalid. Set it with `aocd set-cookie COOKIE`.",
       );
     }
 
@@ -240,11 +240,11 @@ export class DefaultAocdSource implements AocdSource {
     const text = await req.text();
     if (req.status === 500) {
       console.error(
-        "Unknown server error. Is the session cookie correct? Try setting it with `aoc set-cookie COOKIE`.",
+        "Unknown server error. Is the session cookie correct? Try setting it with `aocd set-cookie COOKIE`.",
       );
     } else if (req.status === 400 && text.includes("Please log in")) {
       console.error(
-        "Session cookie is invalid. Set it with `aoc set-cookie COOKIE`.",
+        "Session cookie is invalid. Set it with `aocd set-cookie COOKIE`.",
       );
     } else {
       console.error(`Got status ${req.status}. Response:`);
