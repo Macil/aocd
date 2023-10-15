@@ -1,4 +1,4 @@
-import { parse } from "https://deno.land/std@0.203.0/flags/mod.ts";
+import { parse } from "https://deno.land/std@0.204.0/flags/mod.ts";
 import once from "https://deno.land/x/once@0.3.0/index.ts";
 
 import { Aocd } from "./Aocd.ts";

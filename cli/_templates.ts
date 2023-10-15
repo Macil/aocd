@@ -161,7 +161,7 @@ aocd start 2
 
 export function dayScript(year: number, day: number) {
   return `\
-import { assertEquals } from "https://deno.land/std@0.203.0/assert/mod.ts";
+import { assertEquals } from "https://deno.land/std@0.204.0/assert/mod.ts";
 import { runPart } from "https://deno.land/x/aocd@v${version}/mod.ts";
 
 function parse(input: string) {

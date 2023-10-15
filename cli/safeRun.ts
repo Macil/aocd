@@ -1,4 +1,4 @@
-import { Server } from "https://deno.land/std@0.203.0/http/server.ts";
+import { Server } from "https://deno.land/std@0.204.0/http/server.ts";
 import { basicAuth } from "https://deno.land/x/basic_auth@v1.1.1/mod.ts";
 import type { DefaultAocdSource } from "../DefaultAocdSource.ts";
 
