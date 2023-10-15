@@ -6,7 +6,7 @@ export async function writeNewFile(fileName: string, contents: string) {
   });
   try {
     await ReadableStream.from([new TextEncoder().encode(contents)])
-      .pipeTo(newFile.writable);
+      .pipeTo(newFile.writable, { preventClose: true });
   } finally {
     newFile.close();
   }
