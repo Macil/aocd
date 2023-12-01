@@ -1,5 +1,5 @@
-import cacheDir from "https://deno.land/x/dir@1.5.1/cache_dir/mod.ts";
-import dataDir from "https://deno.land/x/dir@1.5.1/data_dir/mod.ts";
+import cacheDir from "https://deno.land/x/dir@1.5.2/cache_dir/mod.ts";
+import dataDir from "https://deno.land/x/dir@1.5.2/data_dir/mod.ts";
 import once from "https://deno.land/x/once@0.3.0/index.ts";
 import { DB } from "https://deno.land/x/sqlite@v3.8/mod.ts";
 
