@@ -223,7 +223,7 @@ export class DefaultAocdSource implements AocdSource {
       return true;
     }
 
-    if (mainHtml.includes("That's not the right answer.")) {
+    if (mainHtml.includes("That's not the right answer")) {
       return false;
     }
 
