@@ -4,9 +4,9 @@ import type { Answer, AocdSource } from "./_common.ts";
 import { DbManager } from "./_DbManager.ts";
 
 export class DefaultAocdSource implements AocdSource {
-  private dbManager = new DbManager();
+  #dbManager = new DbManager();
 
-  private readonly getSessionCookie = memoizy(async (): Promise<string> => {
+  readonly #getSessionCookie = memoizy(async (): Promise<string> => {
     // Don't try to use the AOC_SESSION env variable unless the user has given access to it.
     const hasAocSessionEnvPerm = await Deno.permissions.query({
       name: "env",
@@ -19,7 +19,7 @@ export class DefaultAocdSource implements AocdSource {
       }
     }
 
-    const db = await this.dbManager.getMainDb();
+    const db = await this.#dbManager.getMainDb();
     const results = db.query<[string]>("SELECT session FROM sessions LIMIT 1");
     if (results[0]) {
       return results[0][0];
@@ -30,7 +30,7 @@ export class DefaultAocdSource implements AocdSource {
   });
 
   async setSessionCookie(session: string) {
-    const db = await this.dbManager.getMainDb();
+    const db = await this.#dbManager.getMainDb();
     db.transaction(() => {
       db.query("DELETE FROM sessions");
       db.query("INSERT INTO sessions (session) VALUES (?)", [
@@ -39,10 +39,10 @@ export class DefaultAocdSource implements AocdSource {
     });
   }
 
-  private async fetchInput(year: number, day: number): Promise<string> {
+  async #fetchInput(year: number, day: number): Promise<string> {
     const url = `https://adventofcode.com/${year}/day/${day}/input`;
     console.warn(`Fetching ${url}`);
-    const AOC_SESSION = await this.getSessionCookie();
+    const AOC_SESSION = await this.#getSessionCookie();
     const req = await fetch(
       url,
       {
@@ -53,7 +53,7 @@ export class DefaultAocdSource implements AocdSource {
       },
     );
     if (!req.ok) {
-      await this.logResponseError(req);
+      await this.#logResponseError(req);
       throw new Error(`Bad response: ${req.status}`);
     }
     return req.text();
@@ -61,7 +61,7 @@ export class DefaultAocdSource implements AocdSource {
 
   readonly getInput: (year: number, day: number) => Promise<string> = memoizy(
     async (year: number, day: number): Promise<string> => {
-      const cacheDb = await this.dbManager.getCacheDb();
+      const cacheDb = await this.#dbManager.getCacheDb();
       const cachedResults = cacheDb.query<[string]>(
         "SELECT input FROM inputs WHERE year = ? AND day = ?",
         [year, day],
@@ -70,7 +70,7 @@ export class DefaultAocdSource implements AocdSource {
         return cachedResults[0][0];
       }
 
-      const input = await this.fetchInput(year, day);
+      const input = await this.#fetchInput(year, day);
       cacheDb.query(
         "INSERT INTO inputs (year, day, input) VALUES (?, ?, ?)",
         [
@@ -84,16 +84,16 @@ export class DefaultAocdSource implements AocdSource {
   );
 
   clearData() {
-    return this.dbManager.clearData();
+    return this.#dbManager.clearData();
   }
 
-  private readonly fetchProblem: (
+  readonly #fetchProblem: (
     year: number,
     day: number,
   ) => Promise<string> = memoizy(
     async (year: number, day: number): Promise<string> => {
       const url = `https://adventofcode.com/${year}/day/${day}`;
-      const AOC_SESSION = await this.getSessionCookie();
+      const AOC_SESSION = await this.#getSessionCookie();
       const req = await fetch(
         url,
         {
@@ -104,14 +104,14 @@ export class DefaultAocdSource implements AocdSource {
         },
       );
       if (!req.ok) {
-        await this.logResponseError(req);
+        await this.#logResponseError(req);
         throw new Error(`Bad response: ${req.status}`);
       }
-      return this.getMainElementHtml(await req.text());
+      return this.#getMainElementHtml(await req.text());
     },
   );
 
-  private getMainElementHtml(fullHtml: string): string {
+  #getMainElementHtml(fullHtml: string): string {
     const match = /<main\b[^>]*>(.*)<\/main>/s.exec(fullHtml);
     if (!match) {
       throw new Error("Could not find main element in response");
@@ -131,7 +131,7 @@ export class DefaultAocdSource implements AocdSource {
       part: number,
       solution: Answer,
     ): Promise<boolean> => {
-      const cacheDb = await this.dbManager.getCacheDb();
+      const cacheDb = await this.#dbManager.getCacheDb();
       const cachedResults = cacheDb.query<[string, number]>(
         "SELECT solution, correct FROM sent_solutions WHERE year = ? AND day = ? AND part = ? AND (solution = ? OR correct)",
         [year, day, part, solution],
@@ -149,7 +149,7 @@ export class DefaultAocdSource implements AocdSource {
         }
       }
 
-      const correct = await this.submitToServer(year, day, part, solution);
+      const correct = await this.#submitToServer(year, day, part, solution);
       cacheDb.query(
         "INSERT INTO sent_solutions (year, day, part, solution, correct) VALUES (?, ?, ?, ?, ?)",
         [
@@ -164,7 +164,7 @@ export class DefaultAocdSource implements AocdSource {
     },
   );
 
-  private async submitToServer(
+  async #submitToServer(
     year: number,
     day: number,
     part: number,
@@ -172,7 +172,7 @@ export class DefaultAocdSource implements AocdSource {
   ): Promise<boolean> {
     const url = `https://adventofcode.com/${year}/day/${day}/answer`;
     console.warn(`Submitting to ${url}`);
-    const AOC_SESSION = await this.getSessionCookie();
+    const AOC_SESSION = await this.#getSessionCookie();
 
     const req = await fetch(
       url,
@@ -190,10 +190,10 @@ export class DefaultAocdSource implements AocdSource {
       },
     );
     if (!req.ok) {
-      await this.logResponseError(req);
+      await this.#logResponseError(req);
       throw new Error(`Bad response: ${req.status}`);
     }
-    const mainHtml = this.getMainElementHtml(await req.text());
+    const mainHtml = this.#getMainElementHtml(await req.text());
 
     if (mainHtml.includes("That's the right answer!")) {
       return true;
@@ -204,7 +204,7 @@ export class DefaultAocdSource implements AocdSource {
     }
 
     if (mainHtml.includes("You don't seem to be solving the right level.")) {
-      const problem = await this.fetchProblem(year, day);
+      const problem = await this.#fetchProblem(year, day);
       const problemSplitByPart = problem.split("</article>");
       let relevantProblemPart = problemSplitByPart[part];
       if (!relevantProblemPart) {
@@ -235,7 +235,7 @@ export class DefaultAocdSource implements AocdSource {
     throw new Error("Could not parse response");
   }
 
-  private async logResponseError(req: Response) {
+  async #logResponseError(req: Response) {
     const text = await req.text();
     if (req.status === 500) {
       console.error(

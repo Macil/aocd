@@ -17,14 +17,14 @@ const defaultOptions: Options = {
 };
 
 export class Aocd {
-  public readonly source: AocdSource;
-  private readonly options: Options;
-  private tasksComplete = Promise.resolve();
+  readonly source: AocdSource;
+  readonly #options: Options;
+  #tasksComplete = Promise.resolve();
 
   constructor(
     config: Config,
   ) {
-    this.options = { ...defaultOptions, ...config.options };
+    this.#options = { ...defaultOptions, ...config.options };
     this.source = config.source;
   }
 
@@ -40,24 +40,24 @@ export class Aocd {
 
       let answer: MaybeAnswer;
       try {
-        if (this.options.time) {
+        if (this.#options.time) {
           console.log(`part ${part} starting`);
           console.time(`part ${part}`);
         }
         answer = await solver(input);
       } finally {
-        if (this.options.time) {
+        if (this.#options.time) {
           console.timeEnd(`part ${part}`);
         }
       }
 
       let correct: boolean | undefined;
-      if (this.options.submit && answer != null) {
+      if (this.#options.submit && answer != null) {
         correct = await this.submit(year, day, part, answer);
       }
 
       return () => {
-        if (this.options.printResults) {
+        if (this.#options.printResults) {
           if (answer == null) {
             console.log(
               `${year} Day ${day} Part ${part} finished executing with no answer returned.`,
@@ -77,21 +77,21 @@ export class Aocd {
       };
     };
 
-    if (this.options.concurrency && !this.options.resultsInOrder) {
+    if (this.#options.concurrency && !this.#options.resultsInOrder) {
       const showResult = await runAndGetResultShower();
       return showResult();
     } else {
-      if (this.options.concurrency && this.options.resultsInOrder) {
+      if (this.#options.concurrency && this.#options.resultsInOrder) {
         const showResultPromise = runAndGetResultShower();
         runAndGetResultShower = () => showResultPromise;
       }
-      const partPromise = this.tasksComplete.then(
+      const partPromise = this.#tasksComplete.then(
         async (): Promise<PartResult> => {
           const showResult = await runAndGetResultShower();
           return showResult();
         },
       );
-      this.tasksComplete = partPromise.then(() => {});
+      this.#tasksComplete = partPromise.then(() => {});
       return partPromise;
     }
   }

@@ -2,10 +2,13 @@ import { userAgent } from "./version.ts";
 import type { Answer, AocdSource } from "./_common.ts";
 
 export class SafeRunAocdSource implements AocdSource {
-  constructor(private readonly apiAddr: string) {}
+  readonly #apiAddr: string;
+  constructor(apiAddr: string) {
+    this.#apiAddr = apiAddr;
+  }
 
   async getInput(year: number, day: number): Promise<string> {
-    const url = new URL(`${this.apiAddr}/getInput`);
+    const url = new URL(`${this.#apiAddr}/getInput`);
     url.searchParams.set("year", String(year));
     url.searchParams.set("day", String(day));
     const req = await fetch(url.toString(), {
@@ -26,7 +29,7 @@ export class SafeRunAocdSource implements AocdSource {
     part: number,
     solution: Answer,
   ): Promise<boolean> {
-    const url = new URL(`${this.apiAddr}/submit`);
+    const url = new URL(`${this.#apiAddr}/submit`);
     const body = { year, day, part, solution };
     const req = await fetch(url.toString(), {
       method: "POST",
