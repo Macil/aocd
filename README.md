@@ -151,10 +151,14 @@ You can run one day's tests with `deno test day_1.ts` or by clicking the play
 button next to it inside of Visual Studio Code. You can run all days' tests with
 `deno task test`.
 
-You can debug a script within Visual Studio Code by picking **Run** -> **Start
-Debugging** in the toolbar while the script is open, or you can debug a script
-by running `deno run -A --inspect-brk day_1.ts` and then opening
-`chrome://inspect` in Chrome.
+You can debug a script within Visual Studio Code by opening the "Run and Debug"
+view on the left side of Visual Studio Code, picking either the "Debug Current
+File" or "Debug Current File's Tests" configuration in the dropdown, and then
+clicking the play button next to it. You can set breakpoints by clicking to the
+left of a line number to place a red dot.
+
+You can also debug a script outside of Visual Studio Code by running
+`deno run -A --inspect-brk day_1.ts` or `deno test --inspect-brk day_1.ts`.
 
 If you want to see the runtime of your solutions, you can add the `--time` (or
 `-t`) flag:
