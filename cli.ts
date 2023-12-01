@@ -69,12 +69,17 @@ await new Command()
     "Run a solution script in a safely-sandboxed environment",
   )
   .option("--deno-flags=<flags:string>", "Pass extra flags to Deno")
+  .option("--input <file>", "Read input from a file instead of fetching it")
   .option("-s, --submit", "Submit answers")
   .option("-t, --time", "Show the runtimes of the solvers")
   .arguments("<script_arg:string>")
   .action(async (options, scriptArg) => {
+    let chosenAocdSource = defaultAocdSource;
+    if (options.input != null) {
+      chosenAocdSource = new DefaultAocdSource({ inputFile: options.input });
+    }
     const denoFlags = options.denoFlags?.split(" ") || [];
-    const status = await safeRun(defaultAocdSource, {
+    const status = await safeRun(chosenAocdSource, {
       denoFlags,
       scriptArg,
       submit: options.submit === true,

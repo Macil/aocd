@@ -167,6 +167,14 @@ If you want to see the runtime of your solutions, you can add the `--time` (or
 deno run -A day_1.ts --time
 ```
 
+If you want to use a local file as input for a problem instead of fetching it
+from the Advent of Code website, you can add the `--input` flag to use a
+specific file:
+
+```
+deno run -A day_1.ts --input myInput.txt
+```
+
 When you're confident about a solution, you can add the `--submit` (or `-s`)
 flag to submit the solution and see if it was correct:
 

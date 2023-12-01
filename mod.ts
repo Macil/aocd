@@ -1,4 +1,4 @@
-import { parse } from "https://deno.land/std@0.208.0/flags/mod.ts";
+import { parseArgs } from "https://deno.land/std@0.208.0/cli/parse_args.ts";
 import once from "https://deno.land/x/once@0.3.0/index.ts";
 
 import { Aocd } from "./Aocd.ts";
@@ -20,9 +20,9 @@ export { Aocd, configureAocd };
 let singleton: Aocd | undefined;
 
 const parsedArgs = once(() =>
-  parse(Deno.args, {
+  parseArgs(Deno.args, {
     boolean: ["s", "submit", "t", "time"],
-    string: ["aocd-api-addr"],
+    string: ["aocd-api-addr", "input"],
   })
 );
 
@@ -63,11 +63,15 @@ function optionsFromCLI(): Partial<Options> {
 }
 
 function sourceFromCLI(): AocdSource {
-  const apiAddr: string | undefined = parsedArgs()["aocd-api-addr"];
+  const p = parsedArgs();
+  const apiAddr: string | undefined = p["aocd-api-addr"];
+  const inputFile: string | undefined = p.input;
   if (apiAddr != null) {
+    // We don't need to pass `inputFile` to SafeRunAocdSource because the API server
+    // it communicates to run by safeRun.ts handles it.
     return new SafeRunAocdSource(apiAddr);
   } else {
-    return new DefaultAocdSource();
+    return new DefaultAocdSource({ inputFile });
   }
 }
 

@@ -1,10 +1,23 @@
+import once from "https://deno.land/x/once@0.3.0/index.ts";
 import memoizy from "https://deno.land/x/memoizy@1.0.0/mod.ts";
 import { userAgent } from "./version.ts";
 import type { Answer, AocdSource } from "./_common.ts";
 import { DbManager } from "./_DbManager.ts";
 
+export interface DefaultAocdSourceOptions {
+  /**
+   * Read input from a file instead of from the Advent of Code website.
+   */
+  inputFile?: string | URL;
+}
+
 export class DefaultAocdSource implements AocdSource {
+  readonly #options: DefaultAocdSourceOptions;
   #dbManager = new DbManager();
+
+  constructor(options?: DefaultAocdSourceOptions) {
+    this.#options = options ?? {};
+  }
 
   readonly #getSessionCookie = memoizy(async (): Promise<string> => {
     // Don't try to use the AOC_SESSION env variable unless the user has given access to it.
@@ -59,8 +72,19 @@ export class DefaultAocdSource implements AocdSource {
     return req.text();
   }
 
+  #readInputFile = once(async (): Promise<string> => {
+    if (this.#options.inputFile == null) {
+      throw new Error("No input file");
+    }
+    return await Deno.readTextFile(this.#options.inputFile);
+  });
+
   readonly getInput: (year: number, day: number) => Promise<string> = memoizy(
     async (year: number, day: number): Promise<string> => {
+      if (this.#options.inputFile != null) {
+        return this.#readInputFile();
+      }
+
       const cacheDb = await this.#dbManager.getCacheDb();
       const cachedResults = cacheDb.query<[string]>(
         "SELECT input FROM inputs WHERE year = ? AND day = ?",
