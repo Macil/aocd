@@ -23,9 +23,23 @@ deno install -A -r -f https://deno.land/x/aocd/cli.ts
 
 ## Usage
 
-First you need to load your Advent of Code session cookie.
-[You need to get this value from your browser](https://github.com/wimglenn/advent-of-code-wim/issues/1)
-after logging into Advent of Code.
+First you need to give aocd your Advent of Code session cookie. You need to get
+this value from your browser after logging into Advent of Code. Once you're
+logged in, follow the instructions for your browser while on the Advent of Code
+website:
+
+**Chrome**: Press the "Customize and control Google Chrome" button (⋮) at the
+top right of the browser, "More tools", "Developer tools", pick the
+"Application" tab (you may have to press the overflow (») button to see it),
+expand "Cookies", click on "https://adventofcode.com", double-click the Value
+field for the "session" cookie, and then right-click and copy it.
+
+**Firefox**: Press the application menu button (☰) at the top right of the
+browser, "More tools", "Web Developer Tools", pick the "Storage" tab, expand
+"Cookies", click on "https://adventofcode.com", double-click the Value field for
+the "session" cookie, and then right-click and copy it.
+
+With your copied cookie value, run this command in a terminal:
 
 ```
 aocd set-cookie COOKIE_VALUE_HERE
