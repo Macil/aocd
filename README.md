@@ -62,7 +62,7 @@ with aocd. The project will include a file named "day_1.ts" which contains a
 basic example of using the aocd library:
 
 ```ts
-import { assertEquals } from "https://deno.land/std@0.204.0/assert/mod.ts";
+import { assertEquals } from "https://deno.land/std@0.208.0/assert/mod.ts";
 import { runPart } from "https://deno.land/x/aocd/mod.ts";
 
 function parse(input: string) {
