@@ -8,7 +8,7 @@ The CLI tool provides a way to configure authentication as your Advent of Code
 account and provides the ability to start a new project or day script from
 built-in templates.
 
-The library is used within each day script that you write, and it manages
+The library is used within each day's script that you write, and it manages
 fetching the problem input and running your solutions with the input. This
 allows you to avoid needing to manually download problem inputs and lets you
 avoid committing them into your repo.
@@ -107,22 +107,21 @@ The `part1()` and `part2()` functions may return a number, a string, or
 null/undefined. If you return null/undefined, the `--submit` functionality of
 aocd will not be able to submit an answer automatically.
 
-You are not required to use a `parse()` function like this. It's provided in the
-template merely as an example of how to share code between the `part1()` and
-`part2()` functions. The example `parse()` function in the template works fine
-for problems with inputs that contain lines with one number each, but you must
-adjust the code for other types of input. Depending on the problem, you may want
-to define a custom interface and return it or an array of it from the `parse()`
-function.
+The `parse()` function is optional and only included in the template as a
+suggestion. It's provided as an example of how to share code between the
+`part1()` and `part2()` functions. The example `parse()` function in the
+template is written for problems with inputs that contain lines with one number
+each, but you must adjust the code for other types of input. Depending on the
+problem, you may want to define a custom interface and return it or an array of
+it from the `parse()` function.
 
-You are also able to have tests directly within the script, unlike in usual Deno
-projects. For Advent of Code, it's usually the most convenient to have the code
-related to a single day in a single file. Deno's standard "deno test" command
-with no arguments expects tests to be in separate files named "test.ts" or with
-the extension ".test.ts". Aocd's project template sets up `deno.json` to add a
-"deno task test" command that can be used in place of "deno test" to also run
-tests in all "day_#.ts" files. All arguments to "deno task test" are passed to
-"deno test".
+You are able to have tests directly within the script, unlike in usual Deno
+projects. Deno's standard "deno test" command with no arguments expects tests to
+be in separate "test.ts" or "*.test.ts" files. For Advent of Code, it's often
+more convenient to have the code related to a single day in a single file.
+Aocd's project template sets up `deno.json` to add a "deno task test" command
+that can be used in place of "deno test" to also run tests within all "day_#.ts"
+files. All arguments to "deno task test" are passed to "deno test".
 
 For the tests, you are expected to replace the `TEST_INPUT` contents with test
 input from the Advent of Code problem description and then update the expected
@@ -132,9 +131,11 @@ tests are not required to use the `TEST_INPUT` variable, so feel free to add
 tests that use other inputs.
 
 The `if (import.meta.main) {` check around the `runPart()` calls is so that the
-solutions are not run when tests are run. You are not expected to modify that
-if-block or its contents except to uncomment the `part2()` function, its
-`runPart()` call, and its test once you're ready to work on part 2's solution.
+solutions are not run when tests are run. The value `import.meta.main` is only
+true when the file is executed directly and not as a test. You are not expected
+to modify that if-block or its contents except to uncomment the `part2()`
+function, its `runPart()` call, and its test once you're ready to work on part
+2's solution.
 
 An example of a complete solution based on this template using this library can
 be seen at
