@@ -32,11 +32,10 @@ export class DefaultAocdSource implements AocdSource {
   async setSessionCookie(session: string) {
     const db = await this.dbManager.getMainDb();
     db.transaction(() => {
+      db.query("DELETE FROM sessions");
       db.query("INSERT INTO sessions (session) VALUES (?)", [
         session,
       ]);
-      const sessionId = db.lastInsertRowId;
-      db.query("DELETE FROM sessions WHERE id != ?", [sessionId]);
     });
   }
 
