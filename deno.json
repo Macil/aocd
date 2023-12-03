@@ -1,5 +1,10 @@
 {
   "tasks": {
-    "test": "deno test"
+    "test": "deno test --allow-read=."
+  },
+  "test": {
+    "exclude": [
+      "_testData"
+    ]
   }
 }
