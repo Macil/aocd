@@ -18,7 +18,7 @@ avoid committing them into your repo.
 The latest version of the `aocd` CLI tool can be installed with this command:
 
 ```
-deno install -A -r -f https://deno.land/x/aocd/cli.ts
+deno install --global -A -r -f https://deno.land/x/aocd/cli.ts
 ```
 
 ## Usage
