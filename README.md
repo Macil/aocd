@@ -191,6 +191,10 @@ aocd start 2
 
 This will create a `day_2.ts` file in the directory.
 
+## Package
+
+This library is published on JSR as [@macil/aocd](https://jsr.io/@macil/aocd).
+
 ## Advanced
 
 ### Help Info
