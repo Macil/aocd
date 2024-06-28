@@ -1,4 +1,4 @@
-import { parseArgs } from "https://deno.land/std@0.208.0/cli/parse_args.ts";
+import { parseArgs } from "https://deno.land/std@0.224.0/cli/parse_args.ts";
 import once from "https://deno.land/x/once@0.3.0/index.ts";
 
 import { Aocd } from "./Aocd.ts";

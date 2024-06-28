@@ -1,7 +1,7 @@
 import {
   assert,
   assertEquals,
-} from "https://deno.land/std@0.208.0/assert/mod.ts";
+} from "https://deno.land/std@0.224.0/assert/mod.ts";
 import sinon from "npm:sinon@^16";
 import { Aocd, AocdSource } from "./mod.ts";
 
