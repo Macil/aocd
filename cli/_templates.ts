@@ -98,9 +98,10 @@ jobs:
   "deno.json": `\
 {
   "tasks": {
-    "test": "deno run --allow-read=. --allow-run https://deno.land/x/aocd@v${version}/eachDayTestRunner.ts"
+    "test": "deno run --allow-read=. --allow-run jsr:@macil/aocd@${version}/eachDayTestRunner"
   },
   "imports": {
+    "@macil/aocd": "jsr:@macil/aocd@^${version}",
     "@std/assert": "jsr:@std/assert@^0.226.0"
   }
 }
@@ -168,7 +169,7 @@ aocd start 2
 export function dayScript(year: number, day: number) {
   return `\
 import { assertEquals } from "@std/assert";
-import { runPart } from "https://deno.land/x/aocd@v${version}/mod.ts";
+import { runPart } from "@macil/aocd";
 
 function parse(input: string) {
   return input.trimEnd().split("\\n").map(Number);
