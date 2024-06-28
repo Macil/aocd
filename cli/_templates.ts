@@ -56,7 +56,7 @@ jobs:
       "program": "\${file}",
       "cwd": "\${workspaceFolder}",
       "runtimeExecutable": "deno",
-      "runtimeArgs": ["run", "--inspect-wait", "--allow-all"],
+      "runtimeArgs": ["run", "--check", "--inspect-wait", "--allow-all"],
       "attachSimplePort": 9229
     },
     {
@@ -84,22 +84,13 @@ jobs:
   "[json]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
-  "[jsonc]": {
-    "editor.defaultFormatter": "denoland.vscode-deno"
-  },
   "[markdown]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
   "[javascript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
-  "[javascriptreact]": {
-    "editor.defaultFormatter": "denoland.vscode-deno"
-  },
   "[typescript]": {
-    "editor.defaultFormatter": "denoland.vscode-deno"
-  },
-  "[typescriptreact]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   }
 }
@@ -108,6 +99,9 @@ jobs:
 {
   "tasks": {
     "test": "deno run --allow-read=. --allow-run https://deno.land/x/aocd@v${version}/eachDayTestRunner.ts"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@^0.226.0"
   }
 }
 `,
@@ -173,7 +167,7 @@ aocd start 2
 
 export function dayScript(year: number, day: number) {
   return `\
-import { assertEquals } from "https://deno.land/std@0.224.0/assert/mod.ts";
+import { assertEquals } from "@std/assert";
 import { runPart } from "https://deno.land/x/aocd@v${version}/mod.ts";
 
 function parse(input: string) {
