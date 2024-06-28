@@ -1,5 +1,9 @@
 # aocd
 
+**This package has been moved from being published at https://deno.land/x/aocd
+to https://jsr.io/@macil/aocd. The version on deno.land/x will not continue to
+get updates.**
+
 This repo contains a CLI tool and library for creating and running
 [Advent of Code](https://adventofcode.com/) solutions using
 [Deno](https://deno.land/).
@@ -18,7 +22,7 @@ avoid committing them into your repo.
 The latest version of the `aocd` CLI tool can be installed with this command:
 
 ```
-deno install --global -A -r -f https://deno.land/x/aocd/cli.ts
+deno install --global -A -r -f jsr:@macil/aocd/cli
 ```
 
 ## Usage
@@ -63,7 +67,7 @@ basic example of using the aocd library:
 
 ```ts
 import { assertEquals } from "@std/assert";
-import { runPart } from "https://deno.land/x/aocd/mod.ts";
+import { runPart } from "@macil/aocd";
 
 function parse(input: string) {
   return input.trimEnd().split("\n").map(Number);
@@ -207,9 +211,9 @@ cached similarly. This cache and the session cookie can be erased by running
 `aocd clear-data`.
 
 Aocd stores data inside
-[cacheDir](https://github.com/justjavac/deno_dirs/tree/main/cache_dir) `/aocd`
-and [dataDir](https://github.com/justjavac/deno_dirs/tree/main/data_dir) `/aocd`
-on your computer within your user's profile directory.
+[cacheDir()](https://github.com/justjavac/deno_dirs/tree/main/cache_dir) `/aocd`
+and [dataDir()](https://github.com/justjavac/deno_dirs/tree/main/data_dir)
+`/aocd` on your computer within your user's profile directory.
 
 ### Safe Run
 
