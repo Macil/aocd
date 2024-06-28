@@ -1,10 +1,10 @@
-import cacheDir from "https://deno.land/x/dir@1.5.2/cache_dir/mod.ts";
-import dataDir from "https://deno.land/x/dir@1.5.2/data_dir/mod.ts";
-import once from "https://deno.land/x/once@0.3.0/index.ts";
-import { DB } from "https://deno.land/x/sqlite@v3.8/mod.ts";
+import cacheDir from "dir/cache_dir/mod.ts";
+import dataDir from "dir/data_dir/mod.ts";
+import { DB } from "sqlite/mod.ts";
+import memoize from "@korkje/memz";
 
 export class DbManager {
-  #getDataDir = once(() => {
+  #getDataDir = memoize(() => {
     const dataDir_ = dataDir();
     if (!dataDir_) throw new Error("Could not find data directory");
     return dataDir_ + "/aocd";
@@ -14,7 +14,7 @@ export class DbManager {
     return this.#getDataDir() + "/main.db";
   }
 
-  readonly getMainDb = once(async () => {
+  readonly getMainDb = memoize(async () => {
     await Deno.permissions.request({
       name: "read",
       path: this.#getDataDir(),
@@ -31,7 +31,7 @@ export class DbManager {
     return db;
   });
 
-  #getCacheDir = once(() => {
+  #getCacheDir = memoize(() => {
     const cacheDir_ = cacheDir();
     if (!cacheDir_) throw new Error("Could not find cache directory");
     return cacheDir_ + "/aocd";
@@ -41,7 +41,7 @@ export class DbManager {
     return this.#getCacheDir() + "/cache.db";
   }
 
-  readonly getCacheDb = once(async () => {
+  readonly getCacheDb = memoize(async () => {
     await Deno.permissions.request({
       name: "read",
       path: this.#getCacheDir(),

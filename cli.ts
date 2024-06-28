@@ -1,8 +1,4 @@
-import {
-  Command,
-  CompletionsCommand,
-  ValidationError,
-} from "https://deno.land/x/cliffy@v1.0.0-rc.4/command/mod.ts";
+import { Command, CompletionsCommand, ValidationError } from "@cliffy/command";
 import { DefaultAocdSource } from "./DefaultAocdSource.ts";
 import { init } from "./cli/init.ts";
 import { safeRun } from "./cli/safeRun.ts";

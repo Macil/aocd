@@ -1,5 +1,5 @@
-import { parseArgs } from "https://deno.land/std@0.224.0/cli/parse_args.ts";
-import once from "https://deno.land/x/once@0.3.0/index.ts";
+import { parseArgs } from "@std/cli/parse-args";
+import memoize from "@korkje/memz";
 
 import { Aocd } from "./Aocd.ts";
 import { DefaultAocdSource } from "./DefaultAocdSource.ts";
@@ -19,7 +19,7 @@ export { Aocd, configureAocd };
 
 let singleton: Aocd | undefined;
 
-const parsedArgs = once(() =>
+const parsedArgs = memoize(() =>
   parseArgs(Deno.args, {
     boolean: ["s", "submit", "t", "time"],
     string: ["aocd-api-addr", "input"],

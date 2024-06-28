@@ -1,8 +1,7 @@
-import once from "https://deno.land/x/once@0.3.0/index.ts";
-import memoizy from "https://deno.land/x/memoizy@1.0.0/mod.ts";
 import { userAgent } from "./version.ts";
 import type { Answer, AocdSource } from "./_common.ts";
 import { DbManager } from "./_DbManager.ts";
+import memoize from "@korkje/memz";
 
 export interface DefaultAocdSourceOptions {
   /**
@@ -19,7 +18,7 @@ export class DefaultAocdSource implements AocdSource {
     this.#options = options ?? {};
   }
 
-  readonly #getSessionCookie = memoizy(async (): Promise<string> => {
+  readonly #getSessionCookie = memoize(async (): Promise<string> => {
     // Don't try to use the AOC_SESSION env variable unless the user has given access to it.
     const hasAocSessionEnvPerm = await Deno.permissions.query({
       name: "env",
@@ -72,14 +71,14 @@ export class DefaultAocdSource implements AocdSource {
     return req.text();
   }
 
-  #readInputFile = once(async (): Promise<string> => {
+  #readInputFile = memoize(async (): Promise<string> => {
     if (this.#options.inputFile == null) {
       throw new Error("No input file");
     }
     return await Deno.readTextFile(this.#options.inputFile);
   });
 
-  readonly getInput: (year: number, day: number) => Promise<string> = memoizy(
+  readonly getInput: (year: number, day: number) => Promise<string> = memoize(
     async (year: number, day: number): Promise<string> => {
       if (this.#options.inputFile != null) {
         return this.#readInputFile();
@@ -114,7 +113,7 @@ export class DefaultAocdSource implements AocdSource {
   readonly #fetchProblem: (
     year: number,
     day: number,
-  ) => Promise<string> = memoizy(
+  ) => Promise<string> = memoize(
     async (year: number, day: number): Promise<string> => {
       const url = `https://adventofcode.com/${year}/day/${day}`;
       const AOC_SESSION = await this.#getSessionCookie();
@@ -148,7 +147,7 @@ export class DefaultAocdSource implements AocdSource {
     day: number,
     part: number,
     solution: Answer,
-  ) => Promise<boolean> = memoizy(
+  ) => Promise<boolean> = memoize(
     async (
       year: number,
       day: number,

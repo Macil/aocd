@@ -1,7 +1,4 @@
-import {
-  assertEquals,
-  assertStrictEquals,
-} from "https://deno.land/std@0.224.0/assert/mod.ts";
+import { assertEquals, assertStrictEquals } from "@std/assert";
 
 const spawnedCommands: MockCommand[] = [];
 

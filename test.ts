@@ -1,9 +1,6 @@
-import {
-  assert,
-  assertEquals,
-} from "https://deno.land/std@0.224.0/assert/mod.ts";
+import { assert, assertEquals } from "@std/assert";
 import sinon from "npm:sinon@^16";
-import { Aocd, AocdSource } from "./mod.ts";
+import { Aocd, type AocdSource } from "./mod.ts";
 
 class TestAocdSource implements AocdSource {
   getInput = sinon.spy((year: number, day: number) =>
