@@ -1,5 +1,5 @@
 import { dir } from "@cross/dir";
-import { DB } from "sqlite/mod.ts";
+import { DB } from "https://deno.land/x/sqlite@v3.8/mod.ts";
 import memoize from "@korkje/memz";
 
 export class DbManager {

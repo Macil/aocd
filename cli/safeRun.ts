@@ -1,5 +1,5 @@
 import { Server } from "@std/http/server";
-import { basicAuth } from "basic_auth/mod.ts";
+import { basicAuth } from "https://deno.land/x/basic_auth@v1.1.1/mod.ts";
 import type { DefaultAocdSource } from "../DefaultAocdSource.ts";
 
 export interface SafeRunOptions {

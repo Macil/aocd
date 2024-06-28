@@ -5,10 +5,14 @@
   "tasks": {
     "test": "deno test --allow-read=."
   },
+  "lint": {
+    "exclude": ["vendor"]
+  },
+  "fmt": {
+    "exclude": ["vendor"]
+  },
   "test": {
-    "exclude": [
-      "_testData"
-    ]
+    "exclude": ["_testData", "vendor"]
   },
   "imports": {
     "@cliffy/command": "jsr:@cliffy/command@^1.0.0-rc.4",
@@ -19,7 +23,6 @@
     "@std/fs": "jsr:@std/fs@0.224.0",
     "@std/http": "jsr:@std/http@0.224.0",
     "@std/path": "jsr:@std/path@0.224.0",
-    "basic_auth/": "https://deno.land/x/basic_auth@v1.1.1/",
-    "sqlite/": "https://deno.land/x/sqlite@v3.8/"
+    "https://deno.land/": "./vendor/deno.land/"
   }
 }
