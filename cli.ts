@@ -1,4 +1,5 @@
-import { Command, CompletionsCommand, ValidationError } from "@cliffy/command";
+import { Command, ValidationError } from "@cliffy/command";
+import { CompletionsCommand } from "@cliffy/command/completions";
 import { DefaultAocdSource } from "./DefaultAocdSource.ts";
 import { init } from "./cli/init.ts";
 import { safeRun } from "./cli/safeRun.ts";
