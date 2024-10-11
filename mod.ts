@@ -3,7 +3,6 @@ import memoize from "@korkje/memz";
 
 import { Aocd } from "./Aocd.ts";
 import { DefaultAocdSource } from "./DefaultAocdSource.ts";
-import { SafeRunAocdSource } from "./SafeRunAocdSource.ts";
 import type {
   AocdSource,
   Config,
@@ -22,7 +21,7 @@ let singleton: Aocd | undefined;
 const parsedArgs = memoize(() =>
   parseArgs(Deno.args, {
     boolean: ["s", "submit", "t", "time"],
-    string: ["aocd-api-addr", "input"],
+    string: ["input"],
   })
 );
 
@@ -64,15 +63,8 @@ function optionsFromCLI(): Partial<Options> {
 
 function sourceFromCLI(): AocdSource {
   const p = parsedArgs();
-  const apiAddr: string | undefined = p["aocd-api-addr"];
   const inputFile: string | undefined = p.input;
-  if (apiAddr != null) {
-    // We don't need to pass `inputFile` to SafeRunAocdSource because the API server
-    // it communicates to run by safeRun.ts handles it.
-    return new SafeRunAocdSource(apiAddr);
-  } else {
-    return new DefaultAocdSource({ inputFile });
-  }
+  return new DefaultAocdSource({ inputFile });
 }
 
 /**

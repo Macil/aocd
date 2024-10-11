@@ -215,38 +215,6 @@ Aocd stores data inside
 and [dataDir()](https://github.com/justjavac/deno_dirs/tree/main/data_dir)
 `/aocd` on your computer within your user's profile directory.
 
-### Safe Run
-
-This library in normal use requires access to environment variables, read and
-write access to several directories, and network access, so using `deno run`
-with the `-A` (`--allow-all`) flag is recommended.
-
-If you want to run a solution script in a sandbox that gives it no extra
-permissions, then you can use this command:
-
-```
-aocd safe-run day_1.ts
-```
-
-This causes day_1.ts to be executed by Deno with no permissions except for a
-communications channel to the privileged aocd process which it uses to fetch
-problem inputs using aocd's session cookie and cache.
-
-This command may be useful if you are trying out another person's solutions and
-want to sandbox their code to be sure it doesn't access any of your personal
-files. You can pass a remote URL to safe-run, such as a GitHub file's raw link:
-
-```
-aocd safe-run https://raw.githubusercontent.com/Macil/deno-advent2021/main/day_1.ts
-```
-
-If you must pass in extra flags to the Deno process started by safe-run, you can
-do that with the `--deno-flags` parameter:
-
-```
-aocd safe-run --deno-flags="--allow-net --allow-env --reload" https://raw.githubusercontent.com/Macil/deno-advent2021/main/day_1.ts
-```
-
 ## Related Projects
 
 This project is partly inspired by [aocf](https://github.com/nuxeh/aocf) and

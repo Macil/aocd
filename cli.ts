@@ -2,7 +2,6 @@ import { Command, ValidationError } from "@cliffy/command";
 import { CompletionsCommand } from "@cliffy/command/completions";
 import { DefaultAocdSource } from "./DefaultAocdSource.ts";
 import { init } from "./cli/init.ts";
-import { safeRun } from "./cli/safeRun.ts";
 import { start } from "./cli/start.ts";
 import { version } from "./version.ts";
 
@@ -60,29 +59,6 @@ await new Command()
     const input = await defaultAocdSource.getInput(year, day);
     await ReadableStream.from([new TextEncoder().encode(input)])
       .pipeTo(Deno.stdout.writable);
-  })
-  .command(
-    "safe-run",
-    "Run a solution script in a safely-sandboxed environment",
-  )
-  .option("--deno-flags=<flags:string>", "Pass extra flags to Deno")
-  .option("--input <file>", "Read input from a file instead of fetching it")
-  .option("-s, --submit", "Submit answers")
-  .option("-t, --time", "Show the runtimes of the solvers")
-  .arguments("<script_arg:string>")
-  .action(async (options, scriptArg) => {
-    let chosenAocdSource = defaultAocdSource;
-    if (options.input != null) {
-      chosenAocdSource = new DefaultAocdSource({ inputFile: options.input });
-    }
-    const denoFlags = options.denoFlags?.split(" ") || [];
-    const status = await safeRun(chosenAocdSource, {
-      denoFlags,
-      scriptArg,
-      submit: options.submit === true,
-      time: options.time === true,
-    });
-    Deno.exit(status.code);
   })
   .command("completions", new CompletionsCommand())
   .parse();
