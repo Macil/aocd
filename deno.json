@@ -7,6 +7,7 @@
     "./eachDayTestRunner": "./eachDayTestRunner.ts"
   },
   "tasks": {
+    "check": "deno check mod.ts cli.ts",
     "test": "deno test --allow-read=."
   },
   "lint": {
