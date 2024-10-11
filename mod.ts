@@ -10,11 +10,26 @@ import type {
   PartResult,
   Solver,
 } from "./_common.ts";
-import { configureAocd } from "./configureAocd.ts";
 
 export type * from "./_common.ts";
 export { version } from "./version.ts";
-export { Aocd, configureAocd };
+export { Aocd };
+
+let globalConfig: Partial<Config> | undefined;
+
+/**
+ * Use this if you want to manually configure Aocd options programmatically or
+ * if you want to configure where Aocd gets its data from. Throws an error if
+ * the Aocd singleton has already been configured or instantiated.
+ */
+export function configureAocd(config: Partial<Config>) {
+  if (globalConfig) {
+    throw new Error(
+      "configureAocd() may not be called when Aocd is already configured",
+    );
+  }
+  globalConfig = config;
+}
 
 let singleton: Aocd | undefined;
 
@@ -41,12 +56,9 @@ export function getAocd(): Aocd {
 }
 
 function constructConfig(): Config {
-  // If globalThis.__aocd_config wasn't already set, set it to signal
-  // to future calls of `configureAocd()` that it's too late to configure
-  // Aocd.
-  // deno-lint-ignore no-explicit-any
-  const explicitlySetConfig: Partial<Config> = (globalThis as any)
-    .__aocd_config ??= {};
+  // If globalConfig wasn't already set, set it to signal to future calls of
+  // `configureAocd()` that it's too late to configure Aocd.
+  const explicitlySetConfig: Partial<Config> = globalConfig ??= {};
 
   return {
     options: explicitlySetConfig.options ?? optionsFromCLI(),
