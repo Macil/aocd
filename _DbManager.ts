@@ -74,7 +74,7 @@ export class DbManager {
       try {
         await Deno.remove(path);
       } catch (err) {
-        if (err?.name !== "NotFound") {
+        if (err instanceof Error && err?.name !== "NotFound") {
           throw err;
         }
       }
