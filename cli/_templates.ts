@@ -102,7 +102,7 @@ jobs:
   },
   "imports": {
     "@macil/aocd": "jsr:@macil/aocd@^${version}",
-    "@std/assert": "jsr:@std/assert@^0.226.0"
+    "@std/assert": "jsr:@std/assert@^1.0.6"
   }
 }
 `,
