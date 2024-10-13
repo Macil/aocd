@@ -7,7 +7,7 @@
   },
   "tasks": {
     "check": "deno check mod.ts cli.ts",
-    "test": "deno test --allow-read=."
+    "test": "deno test"
   },
   "lint": {
     "exclude": ["vendor"]
