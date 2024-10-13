@@ -2,7 +2,7 @@
 
 This repo contains a CLI tool and library for creating and running
 [Advent of Code](https://adventofcode.com/) solutions using
-[Deno](https://deno.land/).
+[Deno](https://deno.com/).
 
 The CLI tool provides a way to configure authentication as your Advent of Code
 account and provides the ability to start a new project or day script from
@@ -149,7 +149,7 @@ deno run -A day_1.ts
 
 You can run one day's tests with `deno test day_1.ts` or by clicking the play
 button next to it inside of Visual Studio Code. You can run all days' tests with
-`deno task test`.
+`deno test`.
 
 You can debug a script within Visual Studio Code by opening the "Run and Debug"
 view on the left side of Visual Studio Code, picking either the "Debug Current
@@ -182,8 +182,8 @@ flag to submit the solution and see if it was correct:
 deno run -A day_1.ts --submit
 ```
 
-When you're ready to start a new solution script for another day's challenge,
-run:
+You can use this command to create a new day_N.ts file from the template for a
+new day:
 
 ```
 aocd start 2

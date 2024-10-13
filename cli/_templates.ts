@@ -32,7 +32,7 @@ jobs:
           deno-version: v2.x
       - run: deno fmt --check
       - run: deno lint
-      - run: deno task test
+      - run: deno test
 `,
   ".vscode/extensions.json": `\
 {
@@ -97,8 +97,14 @@ jobs:
 `,
   "deno.json": `\
 {
-  "tasks": {
-    "test": "deno run --allow-read=. --allow-run jsr:@macil/aocd@${version}/eachDayTestRunner"
+  "test": {
+    "include": [
+      "day_*.*",
+      "**/*.test.*",
+      "**/*_test.*",
+      "**/test.*",
+      "**/__tests__/**"
+    ]
   },
   "imports": {
     "@macil/aocd": "jsr:@macil/aocd@^${version}",
@@ -113,7 +119,7 @@ export function readme(projectName: string, year: number) {
 # ${projectName}
 
 This project contains solutions to [Advent of Code](https://adventofcode.com/)
-${year}, using [Deno](https://deno.land/) and Typescript.
+${year}, using [Deno](https://deno.com/) and Typescript.
 
 ## Usage
 
@@ -132,7 +138,7 @@ deno run -A day_1.ts
 
 You can run one day's tests with \`deno test day_1.ts\` or by clicking the play
 button next to it inside of Visual Studio Code. You can run all days' tests with
-\`deno task test\`.
+\`deno test\`.
 
 You can debug a script within Visual Studio Code by opening the "Run and Debug"
 view on the left side of Visual Studio Code, picking either the "Debug Current
@@ -158,7 +164,8 @@ flag to submit the solution and see if it was correct:
 deno run -A day_1.ts --submit
 \`\`\`
 
-You can start a new day's challenge with this command:
+You can use this command to create a new day_N.ts file from the template for a
+new day:
 
 \`\`\`
 aocd start 2
