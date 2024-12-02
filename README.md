@@ -49,7 +49,7 @@ Next, you can use aocd to start a new project from a template. Run this command
 in a brand new directory with the correct year:
 
 ```
-aocd init 2023
+aocd init 2024
 ```
 
 (If you already have an existing project that you want to start using aocd
@@ -80,8 +80,8 @@ function part1(input: string): number {
 // }
 
 if (import.meta.main) {
-  runPart(2023, 1, 1, part1);
-  // runPart(2023, 1, 2, part2);
+  runPart(2024, 1, 1, part1);
+  // runPart(2024, 1, 2, part2);
 }
 
 const TEST_INPUT = `\
