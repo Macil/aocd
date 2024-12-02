@@ -12,15 +12,35 @@ export async function init(options: InitOptions) {
   if (options.onlyAocdConfig) {
     await createAocdConfig(options.year);
   } else {
-    const entry = await pickEntryInDirectory();
-    if (entry) {
+    // check that none of the files we're about to create already exist.
+    const filesToBeWritten = [
+      ".aocdrc.json",
+      "README.md",
+      "day_1.ts",
+      ...Object.keys(initTemplates),
+    ];
+    const conflicts = (await Promise.all(
+      filesToBeWritten.map(async (fileName) => {
+        try {
+          await Deno.lstat(fileName);
+          return fileName;
+        } catch (err) {
+          if (!(err instanceof Deno.errors.NotFound)) {
+            throw err;
+          }
+          return null;
+        }
+      }),
+    )).filter((conflict) => conflict != null);
+    if (conflicts.length > 0) {
       console.error(
-        `aocd init may only be run within an empty directory. (Found ${
-          describeEntry(entry)
-        }.)`,
+        `The current directory has pre-existing files that conflict with aocd init's templates: ${
+          conflicts.map((conflict) => JSON.stringify(conflict)).join(", ")
+        }.\nYou should either run "aocd init" in an empty directory or remove these conflicting files first.`,
       );
       Deno.exit(1);
     }
+
     await createAocdConfig(options.year);
 
     const projectName = basename(await Deno.realPath("."));
@@ -42,16 +62,4 @@ async function createAocdConfig(year: number) {
   const config = { year };
   await writeNewFile(".aocdrc.json", JSON.stringify(config, null, 2) + "\n");
   console.log("Created .aocdrc.json");
-}
-
-function describeEntry(entry: Deno.DirEntry): string {
-  const kind = entry.isFile ? "file" : entry.isDirectory ? "directory" : "item";
-  return `${kind} ${JSON.stringify(entry.name)}`;
-}
-
-async function pickEntryInDirectory(): Promise<Deno.DirEntry | null> {
-  for await (const entry of Deno.readDir(".")) {
-    return entry;
-  }
-  return null;
 }
