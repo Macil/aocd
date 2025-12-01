@@ -2,7 +2,10 @@ import { parseArgs } from "@std/cli/parse-args";
 import memoize from "@korkje/memz";
 
 import { Aocd } from "./Aocd.ts";
-import { DefaultAocdSource } from "./DefaultAocdSource.ts";
+import {
+  DefaultAocdSource,
+  type DefaultAocdSourceOptions,
+} from "./DefaultAocdSource.ts";
 import type {
   AocdSource,
   Config,
@@ -13,7 +16,7 @@ import type {
 
 export type * from "./_common.ts";
 export { version } from "./version.ts";
-export { Aocd };
+export { Aocd, DefaultAocdSource, type DefaultAocdSourceOptions };
 
 let globalConfig: Partial<Config> | undefined;
 
