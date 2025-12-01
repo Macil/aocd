@@ -32,9 +32,9 @@ export class DefaultAocdSource implements AocdSource {
     }
 
     const db = await this.#dbManager.getMainDb();
-    const results = db.query<[string]>("SELECT session FROM sessions LIMIT 1");
-    if (results[0]) {
-      return results[0][0];
+    const result = db.prepare("SELECT session FROM sessions LIMIT 1").get();
+    if (result) {
+      return result.session;
     }
     throw new Error(
       "Could not find Advent of Code session cookie. You need to install the aocd CLI tool and run the `aocd set-cookie` command first (https://github.com/Macil/aocd#install).",
@@ -43,12 +43,15 @@ export class DefaultAocdSource implements AocdSource {
 
   async setSessionCookie(session: string) {
     const db = await this.#dbManager.getMainDb();
-    db.transaction(() => {
-      db.query("DELETE FROM sessions");
-      db.query("INSERT INTO sessions (session) VALUES (?)", [
-        session,
-      ]);
-    });
+    try {
+      db.exec("BEGIN TRANSACTION");
+      db.exec("DELETE FROM sessions");
+      db.prepare("INSERT INTO sessions (session) VALUES (?)").run(session);
+      db.exec("COMMIT");
+    } catch (e) {
+      db.exec("ROLLBACK");
+      throw e;
+    }
   }
 
   async #fetchInput(year: number, day: number): Promise<string> {
@@ -85,28 +88,22 @@ export class DefaultAocdSource implements AocdSource {
       }
 
       const cacheDb = await this.#dbManager.getCacheDb();
-      const cachedResults = cacheDb.query<[string]>(
+      const cachedResult = cacheDb.prepare(
         "SELECT input FROM inputs WHERE year = ? AND day = ?",
-        [year, day],
-      );
-      if (cachedResults[0]) {
-        return cachedResults[0][0];
+      ).get(year, day);
+      if (cachedResult) {
+        return cachedResult.input;
       }
 
       const input = await this.#fetchInput(year, day);
-      cacheDb.query(
+      cacheDb.prepare(
         "INSERT INTO inputs (year, day, input) VALUES (?, ?, ?)",
-        [
-          year,
-          day,
-          input,
-        ],
-      );
+      ).run(year, day, input);
       return input;
     },
   );
 
-  clearData() {
+  clearData(): Promise<void> {
     return this.#dbManager.clearData();
   }
 
@@ -155,12 +152,12 @@ export class DefaultAocdSource implements AocdSource {
       solution: Answer,
     ): Promise<boolean> => {
       const cacheDb = await this.#dbManager.getCacheDb();
-      const cachedResults = cacheDb.query<[string, number]>(
+      const cachedResult = cacheDb.prepare(
         "SELECT solution, correct FROM sent_solutions WHERE year = ? AND day = ? AND part = ? AND (solution = ? OR correct)",
-        [year, day, part, solution],
-      );
-      if (cachedResults[0]) {
-        const [cachedSolution, correct] = cachedResults[0];
+      ).get(year, day, part, solution);
+      if (cachedResult) {
+        const cachedSolution = cachedResult.solution as string;
+        const correct = cachedResult.correct as number;
         if (
           typeof solution === "number"
             ? Number(cachedSolution) === solution
@@ -173,16 +170,9 @@ export class DefaultAocdSource implements AocdSource {
       }
 
       const correct = await this.#submitToServer(year, day, part, solution);
-      cacheDb.query(
+      cacheDb.prepare(
         "INSERT INTO sent_solutions (year, day, part, solution, correct) VALUES (?, ?, ?, ?, ?)",
-        [
-          year,
-          day,
-          part,
-          solution,
-          correct ? 1 : 0,
-        ],
-      );
+      ).run(year, day, part, solution, correct ? 1 : 0);
       return correct;
     },
   );

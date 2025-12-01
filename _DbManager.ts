@@ -1,5 +1,5 @@
 import { dir } from "@cross/dir";
-import { DB } from "https://deno.land/x/sqlite@v3.9.1/mod.ts";
+import { DatabaseSync } from "node:sqlite";
 import memoize from "@korkje/memz";
 
 export class DbManager {
@@ -19,8 +19,8 @@ export class DbManager {
       path: await this.#getDataDir(),
     });
     await Deno.mkdir(await this.#getDataDir(), { recursive: true });
-    const db = new DB(await this.#getMainDbPath());
-    db.query(`\
+    const db = new DatabaseSync(await this.#getMainDbPath());
+    db.exec(`\
       CREATE TABLE IF NOT EXISTS sessions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -46,8 +46,8 @@ export class DbManager {
       path: await this.#getCacheDir(),
     });
     await Deno.mkdir(await this.#getCacheDir(), { recursive: true });
-    const db = new DB(await this.#getCacheDbPath());
-    db.query(`\
+    const db = new DatabaseSync(await this.#getCacheDbPath());
+    db.exec(`\
       CREATE TABLE IF NOT EXISTS inputs (
         year INTEGER NOT NULL,
         day INTEGER NOT NULL,
@@ -55,7 +55,7 @@ export class DbManager {
         PRIMARY KEY (year, day)
       )
     `);
-    db.query(`\
+    db.exec(`\
       CREATE TABLE IF NOT EXISTS sent_solutions (
         year INTEGER NOT NULL,
         day INTEGER NOT NULL,
