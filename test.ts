@@ -1,5 +1,5 @@
 import { assert, assertEquals } from "@std/assert";
-import sinon from "npm:sinon@^16";
+import sinon from "sinon";
 import { Aocd, type AocdSource } from "./mod.ts";
 
 class TestAocdSource implements AocdSource {

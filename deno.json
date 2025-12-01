@@ -25,6 +25,7 @@
     "@std/cli": "jsr:@std/cli@^1.0.6",
     "@std/http": "jsr:@std/http@^1.0.8",
     "@std/path": "jsr:@std/path@^1.0.6",
-    "https://deno.land/": "./vendor/deno.land/"
+    "https://deno.land/": "./vendor/deno.land/",
+    "sinon": "npm:sinon@^21.0.0"
   }
 }
