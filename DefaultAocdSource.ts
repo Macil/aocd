@@ -34,7 +34,7 @@ export class DefaultAocdSource implements AocdSource {
     const db = await this.#dbManager.getMainDb();
     const result = db.prepare("SELECT session FROM sessions LIMIT 1").get();
     if (result) {
-      return result.session;
+      return result.session as string;
     }
     throw new Error(
       "Could not find Advent of Code session cookie. You need to install the aocd CLI tool and run the `aocd set-cookie` command first (https://github.com/Macil/aocd#install).",
@@ -92,7 +92,7 @@ export class DefaultAocdSource implements AocdSource {
         "SELECT input FROM inputs WHERE year = ? AND day = ?",
       ).get(year, day);
       if (cachedResult) {
-        return cachedResult.input;
+        return cachedResult.input as string;
       }
 
       const input = await this.#fetchInput(year, day);
