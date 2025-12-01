@@ -32,6 +32,7 @@ jobs:
           deno-version: v2.x
       - run: deno fmt --check
       - run: deno lint
+      - run: deno check
       - run: deno test
 `,
   ".vscode/extensions.json": `\
