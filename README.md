@@ -1,4 +1,4 @@
-# aocd
+# aocd [![JSR](https://jsr.io/badges/@macil/aocd)](https://jsr.io/@macil/aocd)
 
 This repo contains a CLI tool and library for creating and running
 [Advent of Code](https://adventofcode.com/) solutions using
