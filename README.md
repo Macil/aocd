@@ -115,13 +115,11 @@ each, but you must adjust the code for other types of input. Depending on the
 problem, you may want to define a custom interface and return it or an array of
 it from the `parse()` function.
 
-You are able to have tests directly within the script, unlike in usual Deno
-projects. Deno's standard "deno test" command with no arguments expects tests to
-be in separate "test.ts" or "*.test.ts" files. For Advent of Code, it's often
-more convenient to have the code related to a single day in a single file.
-Aocd's project template sets up `deno.json` to add a "deno task test" command
-that can be used in place of "deno test" to also run tests within all "day_#.ts"
-files. All arguments to "deno task test" are passed to "deno test".
+You are able to have tests directly within the script. The "deno test" command
+with no arguments by default expects tests to be in separate "test.ts" or
+"\*.test.ts" files, but this project configures `deno.json` so "deno test"
+includes "day_\*.ts" files. For Advent of Code, it's often more convenient to
+have the code related to a single day in a single file.
 
 For the tests, you are expected to replace the `TEST_INPUT` contents with test
 input from the Advent of Code problem description and then update the expected
