@@ -5,11 +5,6 @@
     ".": "./mod.ts",
     "./cli": "./cli.ts"
   },
-  "lint": {
-    "rules": {
-      "exclude": ["no-import-prefix"]
-    }
-  },
   "test": {
     "exclude": ["_testData"]
   },
