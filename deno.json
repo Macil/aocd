@@ -6,7 +6,9 @@
     "./cli": "./cli.ts"
   },
   "test": {
-    "exclude": ["_testData"]
+    "exclude": ["_testData"],
+    "sanitizeOps": true,
+    "sanitizeResources": true
   },
   "publish": {
     "exclude": ["_testData", ".github", ".vscode"]
