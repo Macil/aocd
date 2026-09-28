@@ -9,10 +9,10 @@ const defaultAocdSource = new DefaultAocdSource();
 
 await new Command()
   .name("aocd")
+  .version(version)
   .description(
     "Helper tool for solving Advent of Code with Deno.\nFull instructions are available at <https://github.com/Macil/aocd/blob/main/README.md>.",
   )
-  .version(version)
   .command(
     "init",
     "Initialize a project directory",
