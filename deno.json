@@ -1,17 +1,23 @@
 {
   "name": "@macil/aocd",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "exports": {
     ".": "./mod.ts",
     "./cli": "./cli.ts"
   },
   "test": {
-    "exclude": ["_testData"],
+    "exclude": [
+      "_testData"
+    ],
     "sanitizeOps": true,
     "sanitizeResources": true
   },
   "publish": {
-    "exclude": ["_testData", ".github", ".vscode"]
+    "exclude": [
+      "_testData",
+      ".github",
+      ".vscode"
+    ]
   },
   "imports": {
     "@cliffy/command": "jsr:@cliffy/command@^1.3.1",
