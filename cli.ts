@@ -1,4 +1,4 @@
-import { Command, ValidationError } from "@cliffy/command";
+import { Command } from "@cliffy/command";
 import { CompletionsCommand } from "@cliffy/command/completions";
 import { DefaultAocdSource } from "./DefaultAocdSource.ts";
 import { init } from "./cli/init.ts";
@@ -13,9 +13,6 @@ await new Command()
     "Helper tool for solving Advent of Code with Deno.\nFull instructions are available at <https://github.com/Macil/aocd/blob/main/README.md>.",
   )
   .version(version)
-  .action(() => {
-    throw new ValidationError("A command is required");
-  })
   .command(
     "init",
     "Initialize a project directory",
